@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "write_wav.h"
+
 struct wav_header {
 	char riff[4];
 	int32_t flength;
@@ -15,19 +16,19 @@ struct wav_header {
 	int16_t bits_per_sample;
 	char data[4];
 	int32_t dlength;
-}
+};
 
 void write_wav(char *name, const int sample_rate, const int length, 
 	const int duration_sec, int *buffer) 
 {
 	// const int sample_rate = 48000;
 	// const int length = 24;
-	struct wave_header wavh;
+	struct wav_header wavh;
 
-	strncpy(wave.riff, "RIFF", 4);
-	strncpy(wave.wave, "WAVE", 4);
-	strncpy(wave.fmt, "fmt", 4);
-	strncpy(wave.data, "data", 4);
+	strncpy(wavh.riff, "RIFF", 4);
+	strncpy(wavh.wave, "WAVE", 4);
+	strncpy(wavh.fmt, "fmt", 4);
+	strncpy(wavh.data, "data", 4);
 
 	wavh.format_size = length;	// 24
 	wavh.format_type = 1;
