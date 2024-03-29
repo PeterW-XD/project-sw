@@ -15,11 +15,14 @@
 #include <string.h>
 #include <unistd.h>
 #include "write_wav.h"
+
+
+#define sample_rate 48000	// 48000kHz
+#define word_length 24		// 24 bits per sample
+#define duration_sec 10		// 10s
+
 // int vga_ball_fd;
 int project_top_fd;
-const int sample_rate = 48000;	// 48000kHz
-const int word_length = 24;			// 24 bits per sample
-const int duration_sec = 10;		// 10s
 const int buf_size = sample_rate * word_length;
 int left_buf[buf_size];
 int right_buf[buf_size];
