@@ -15,7 +15,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "write_wav.h"
-
+#include <stdint.h>
 // int vga_ball_fd;
 int project_top_fd;
 const int sample_rate = 48000;	// 48000kHz

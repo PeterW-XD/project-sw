@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <string.h>
 #include "write_wav.h"
 
 struct wav_header {
