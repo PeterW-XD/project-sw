@@ -40,6 +40,7 @@ void read_audio() {
 	if (vla.audio.ready == 1) {
 		left_buf[buf_index++] = vla.audio.left;
 		right_buf[buf_index++] = vla.audio.right;
+		printf("%d\n", vla.audio.left);
 	}
   //printf("%02x %02x %02x\n",
 	// vla.background.red, vla.background.green, vla.background.blue);
