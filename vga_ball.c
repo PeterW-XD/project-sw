@@ -55,9 +55,9 @@ struct vga_ball_dev { // vga_ball_dev
  */
 static void read_audio(vga_ball_t *audio)
 {
-	audio.left = ioread32(DATA_L(dev.virbase));
-	audio.right = ioread32(DATA_R(dev.virbase));
-	audio.ready = ioread32(READY(dev.virbase));
+	audio->left = ioread32(DATA_L(dev.virtbase));
+	audio->right = ioread32(DATA_R(dev.virtbase));
+	audio->ready = ioread32(READY(dev.virtbase));
 	dev.audio = *audio;
 	//iowrite8(background->red, BG_RED(dev.virtbase) );
 	//iowrite8(background->green, BG_GREEN(dev.virtbase) );
@@ -113,46 +113,46 @@ static struct miscdevice vga_ball_misc_device = {
  * Initialization code: get resources (registers) and display
  * a welcome message
  */
-//static int __init vga_ball_probe(struct platform_device *pdev)
-//{
-//        vga_ball_color_t beige = { 0xf9, 0xe4, 0xb7 };
-//	int ret;
-//
-//	/* Register ourselves as a misc device: creates /dev/vga_ball */
-//	ret = misc_register(&vga_ball_misc_device);
-//
-//	/* Get the address of our registers from the device tree */
-//	ret = of_address_to_resource(pdev->dev.of_node, 0, &dev.res);
-//	if (ret) {
-//		ret = -ENOENT;
-//		goto out_deregister;
-//	}
-//
-//	/* Make sure we can use these registers */
-//	if (request_mem_region(dev.res.start, resource_size(&dev.res),
-//			       DRIVER_NAME) == NULL) {
-//		ret = -EBUSY;
-//		goto out_deregister;
-//	}
-//
-//	/* Arrange access to our registers */
-//	dev.virtbase = of_iomap(pdev->dev.of_node, 0);
-//	if (dev.virtbase == NULL) {
-//		ret = -ENOMEM;
-//		goto out_release_mem_region;
-//	}
-//        
-//	/* Set an initial color */
-//        write_background(&beige);
-//
-//	return 0;
-//
-//out_release_mem_region:
-//	release_mem_region(dev.res.start, resource_size(&dev.res));
-//out_deregister:
-//	misc_deregister(&vga_ball_misc_device);
-//	return ret;
-//}
+static int __init vga_ball_probe(struct platform_device *pdev)
+{
+  // vga_ball_color_t beige = { 0xf9, 0xe4, 0xb7 };
+	int ret;
+
+	/* Register ourselves as a misc device: creates /dev/vga_ball */
+	ret = misc_register(&vga_ball_misc_device);
+
+	/* Get the address of our registers from the device tree */
+	ret = of_address_to_resource(pdev->dev.of_node, 0, &dev.res);
+	if (ret) {
+		ret = -ENOENT;
+		goto out_deregister;
+	}
+
+	/* Make sure we can use these registers */
+	if (request_mem_region(dev.res.start, resource_size(&dev.res),
+			       DRIVER_NAME) == NULL) {
+		ret = -EBUSY;
+		goto out_deregister;
+	}
+
+	/* Arrange access to our registers */
+	dev.virtbase = of_iomap(pdev->dev.of_node, 0);
+	if (dev.virtbase == NULL) {
+		ret = -ENOMEM;
+		goto out_release_mem_region;
+	}
+        
+	/* Set an initial color */
+  // write_background(&beige);
+
+	return 0;
+
+out_release_mem_region:
+	release_mem_region(dev.res.start, resource_size(&dev.res));
+out_deregister:
+	misc_deregister(&vga_ball_misc_device);
+	return ret;
+}
 
 
 /* Clean-up code: release resources */
