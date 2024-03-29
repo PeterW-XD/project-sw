@@ -60,7 +60,7 @@ int main()
 {
   // int i;
   // static const char filename[] = "/dev/vga_ball";
-  static const char filename[] = "/dev/project_top";
+  static const char filename[] = "/dev/vga_ball";
   static const char file1[] = "test1.wav";
   static const char file2[] = "test2.wav";
   printf("Audio record program started\n");
