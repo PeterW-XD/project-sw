@@ -18,7 +18,7 @@ struct wav_header {
 	int32_t dlength;
 };
 
-void write_wav(char *name, const int sample_rate, const int length, 
+void write_wav(const char *name, const int sample_rate, const int length, 
 	const int duration_sec, int *buffer) 
 {
 	// const int sample_rate = 48000;
