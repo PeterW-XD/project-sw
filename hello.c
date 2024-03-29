@@ -21,10 +21,10 @@ int project_top_fd;
 const int sample_rate = 48000;	// 48000kHz
 const int word_length = 24;			// 24 bits per sample
 const int duration_sec = 10;		// 10s
-const int buf_size = sample_rate * duration_sec;
+#define buf_size 1152000
 int left_buf[buf_size];
 int right_buf[buf_size];
-int index = 0;
+int buf_index = 0;
 
 /* Read and print the background color */
 //void print_background_color() {
@@ -36,8 +36,8 @@ void read_audio() {
       return;
   }
 	if (vla.audio.ready == 1) {
-		left_buf[index++] = vla.audio.left;
-		right_buf[index++] = vla.audio.right;
+		left_buf[buf_index++] = vla.audio.left;
+		right_buf[buf_index++] = vla.audio.right;
 	}
   //printf("%02x %02x %02x\n",
 	// vla.background.red, vla.background.green, vla.background.blue);
@@ -66,7 +66,7 @@ int main()
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
   }
-	while (index < buf_size) {
+	while (buf_index < buf_size) {
 		read_audio();
 	}
 	write_wav(file1, sample_rate, word_length, duration_sec, left_buf);

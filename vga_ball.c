@@ -73,7 +73,7 @@ static void read_audio(vga_ball_t *audio)
 static long vga_ball_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 {
 	vga_ball_arg_t vla;
-
+	vga_ball_t audio;
 	switch (cmd) {
 	/*case VGA_BALL_WRITE_BACKGROUND:
 		if (copy_from_user(&vla, (vga_ball_arg_t *) arg,
@@ -83,6 +83,7 @@ static long vga_ball_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 		break;*/
 
 	case AUDIO_READ:
+			read_audio(&audio); // Read audio
 	  	vla.audio = dev.audio;
 		if (copy_to_user((vga_ball_arg_t *) arg, &vla,
 				 sizeof(vga_ball_arg_t)))

@@ -4,7 +4,7 @@
 #include <linux/ioctl.h>
 
 typedef struct {
-	int32_t left, right, ready;
+	int left, right, ready;
 } vga_ball_t;
   
 
