@@ -61,8 +61,8 @@ int main()
   // int i;
   // static const char filename[] = "/dev/vga_ball";
   static const char filename[] = "/dev/vga_ball";
-  static const char file1[] = "test1.wav";
-  static const char file2[] = "test2.wav";
+  static const char file1[] = "./test1.wav";
+  static const char file2[] = "./test2.wav";
   printf("Audio record program started\n");
   if ( (project_top_fd = open(filename, O_RDWR)) == -1) {
     fprintf(stderr, "could not open %s\n", filename);
@@ -71,6 +71,7 @@ int main()
 	while (buf_index < buf_size) {
 		read_audio();
 	}
+	printf("done\n");
 	write_wav(file1, sample_rate, word_length, duration_sec, left_buf);
 	write_wav(file2, sample_rate, word_length, duration_sec, right_buf);
 
