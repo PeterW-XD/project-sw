@@ -27,7 +27,7 @@ int project_top_fd;
 int left_buf[buf_size];
 int right_buf[buf_size];
 int left_ready, right_ready;
-int left_index, right_index;
+int left_index = 0, right_index = 0;
 
 /* Read and print the background color */
 //void print_background_color() {
@@ -66,9 +66,6 @@ void read_audio() {
 
 int main()
 {
-  // int i;
-  left_index = 0;
-	right_index = 0;
   // static const char filename[] = "/dev/vga_ball";
   static const char filename[] = "/dev/audio";
   static const char file1[] = "./test1.wav";
