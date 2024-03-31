@@ -38,7 +38,7 @@ void read_audio() {
       perror("ioctl(READ) failed");
       return;
   }
-	printf("ready = %d", vla.audio.left);
+	printf("ready = %d\n", vla.audio.left);
 	left_ready = vla.audio.ready % 2;
 	right_ready = vla.audio.ready / 2;
 	if (left_ready == 1) {
