@@ -26,6 +26,7 @@
 int project_top_fd;
 int left_buf[buf_size];
 int right_buf[buf_size];
+int left_ready, right_ready;
 int buf_index = 0;
 
 /* Read and print the background color */
@@ -37,12 +38,15 @@ void read_audio() {
       perror("ioctl(READ) failed");
       return;
   }
-	if (vla.audio.ready == 1) {
+	left_ready = vla.audio.ready % 2;
+	right_ready = vla.audio.ready / 2;
+	if (left_ready == 1) {
 		left_buf[buf_index++] = vla.audio.left;
+		printf("Left = %d\n", vla.audio.left);
+	} else if (right_ready == 1) {
 		right_buf[buf_index++] = vla.audio.right;
-		printf("%d\n", vla.audio.left);
-	}
-	else {
+		printf("Right = %d\n", vla.audio.right);
+	} else {
 		printf("fail\n");
 	}
   //printf("%02x %02x %02x\n",
