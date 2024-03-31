@@ -27,7 +27,7 @@ int project_top_fd;
 int left_buf[buf_size];
 int right_buf[buf_size];
 int left_ready, right_ready;
-int buf_index = 0;
+int left_index, right_index;
 
 /* Read and print the background color */
 //void print_background_color() {
@@ -42,10 +42,10 @@ void read_audio() {
 	left_ready = vla.audio.ready % 2;
 	right_ready = vla.audio.ready / 2;
 	if (left_ready) {
-		left_buf[buf_index++] = vla.audio.left;
+		left_buf[left_index++] = vla.audio.left;
 		printf("Left = %d\n", vla.audio.left);
 	} else if (right_ready) {
-		right_buf[buf_index++] = vla.audio.right;
+		right_buf[right_index++] = vla.audio.right;
 		printf("Right = %d\n", vla.audio.right);
 	}
 
@@ -67,6 +67,8 @@ void read_audio() {
 int main()
 {
   // int i;
+  left_index = 0;
+	right_index = 0;
   // static const char filename[] = "/dev/vga_ball";
   static const char filename[] = "/dev/audio";
   static const char file1[] = "./test1.wav";
@@ -76,9 +78,9 @@ int main()
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
   }
-	while (buf_index < buf_size) {
+	while (left_index < buf_size & right_index < buf_size) {
 		read_audio();
-    printf("Index = %d\n", buf_index);
+    printf("Index = %d\n", left_index);
 	}
 	printf("done\n");
 	write_wav(file1, sample_rate, word_length, duration_sec, left_buf);
