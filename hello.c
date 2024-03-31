@@ -7,7 +7,7 @@
  */
 
 #include <stdio.h>
-#include "vga_ball.h"
+#include "audio.h"
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -32,7 +32,7 @@ int buf_index = 0;
 /* Read and print the background color */
 //void print_background_color() {
 void read_audio() {
-  vga_ball_arg_t vla;
+  audio_arg_t vla;
   
   if (ioctl(project_top_fd, AUDIO_READ, &vla)) {
       perror("ioctl(READ) failed");
@@ -68,7 +68,7 @@ int main()
 {
   // int i;
   // static const char filename[] = "/dev/vga_ball";
-  static const char filename[] = "/dev/vga_ball";
+  static const char filename[] = "/dev/audio";
   static const char file1[] = "./test1.wav";
   static const char file2[] = "./test2.wav";
   printf("Audio record program started\n");

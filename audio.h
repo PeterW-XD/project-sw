@@ -1,22 +1,20 @@
-#ifndef _VGA_BALL_H
-#define _VGA_BALL_H
+#ifndef _AUDIO_H
+#define _AUDIO_H
 
 #include <linux/ioctl.h>
 
 typedef struct {
 	int left, right, ready;
-} vga_ball_t;
+} audio_t;
   
 
 typedef struct {
-  vga_ball_t audio;
-} vga_ball_arg_t;
+  audio_t audio;
+} audio_arg_t;
 
-#define VGA_BALL_MAGIC 'q'
+#define AUDIO_MAGIC 'q'
 
 /* ioctls and their arguments */
-//#define VGA_BALL_WRITE_BACKGROUND _IOW(VGA_BALL_MAGIC, 1, vga_ball_arg_t *)
-//#define VGA_BALL_READ_BACKGROUND  _IOR(VGA_BALL_MAGIC, 2, vga_ball_arg_t *)
-#define AUDIO_READ  _IOR(VGA_BALL_MAGIC, 1, vga_ball_arg_t *)
+#define AUDIO_READ  _IOR(AUDIO_MAGIC, 1, audio_arg_t *)
 
 #endif
