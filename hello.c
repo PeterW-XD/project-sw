@@ -38,7 +38,7 @@ void read_audio() {
       perror("ioctl(READ) failed");
       return;
   }
-	printf("ready = %d\n", vla.audio.ready);
+	//printf("ready = %d\n", vla.audio.ready);
 	left_ready = vla.audio.ready % 2;
 	right_ready = vla.audio.ready / 2;
 	if (left_ready == 1) {
@@ -47,7 +47,8 @@ void read_audio() {
 	} else if (right_ready == 1) {
 		right_buf[buf_index++] = vla.audio.right;
 		printf("Right = %d\n", vla.audio.right);
-	} 
+	} else
+		printf("fail\n"); 
 	
   //printf("%02x %02x %02x\n",
 	// vla.background.red, vla.background.green, vla.background.blue);
