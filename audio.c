@@ -35,6 +35,8 @@
 
 #define DRIVER_NAME "audio"
 
+// DECLARE_WAIT_QUEUE_HEAD(wq);
+
 /* Device registers */
 #define DATA_L(x) (x)
 #define DATA_R(x) ((x)+4)
@@ -58,7 +60,6 @@ static void read_audio(audio_t *audio)
 	audio->left = ioread32(DATA_L(dev.virtbase));
 	audio->right = ioread32(DATA_R(dev.virtbase));
 	audio->ready = ioread32(READY(dev.virtbase));
-	//dev.audio = *audio;
 	//iowrite8(background->red, BG_RED(dev.virtbase) );
 	//iowrite8(background->green, BG_GREEN(dev.virtbase) );
 	//iowrite8(background->blue, BG_BLUE(dev.virtbase) );
