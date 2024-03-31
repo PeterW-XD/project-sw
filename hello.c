@@ -39,6 +39,8 @@ void read_audio() {
       return;
   }
 	printf("ready = %d\n", vla.audio.ready);
+  printf("Left = %d\n", vla.audio.left);
+  printf("Right = %d\n", vla.audio.right);
 	left_ready = vla.audio.ready % 2;
 	right_ready = vla.audio.ready / 2;
 	if (left_ready) {
@@ -77,7 +79,7 @@ int main()
   }
 	while (left_index < buf_size & right_index < buf_size) {
 		read_audio();
-    printf("Index = %d\n", left_index);
+    //printf("Index = %d\n", left_index);
 	}
 	printf("done\n");
 	write_wav(file1, sample_rate, word_length, duration_sec, left_buf);
