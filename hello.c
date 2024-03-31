@@ -48,7 +48,7 @@ void read_audio() {
 		right_buf[buf_index++] = vla.audio.right;
 		printf("Right = %d\n", vla.audio.right);
 	}
-	
+
   //printf("%02x %02x %02x\n",
 	// vla.background.red, vla.background.green, vla.background.blue);
 }
@@ -68,7 +68,7 @@ int main()
 {
   // int i;
   // static const char filename[] = "/dev/vga_ball";
-  buf_size = 0;
+  buf_index = 0;
   static const char filename[] = "/dev/audio";
   static const char file1[] = "./test1.wav";
   static const char file2[] = "./test2.wav";
@@ -79,6 +79,7 @@ int main()
   }
 	while (buf_index < buf_size) {
 		read_audio();
+    printf("Index = %d\n", buf_index);
 	}
 	printf("done\n");
 	write_wav(file1, sample_rate, word_length, duration_sec, left_buf);
