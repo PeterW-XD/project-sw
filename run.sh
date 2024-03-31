@@ -1,3 +1,3 @@
-rmmod vga_ball
-insmod vga_ball.ko
+rmmod audio
+insmod audio.ko
 ./hello
