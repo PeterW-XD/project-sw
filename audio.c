@@ -58,7 +58,7 @@ static void read_audio(audio_t *audio)
 	audio->left = ioread32(DATA_L(dev.virtbase));
 	audio->right = ioread32(DATA_R(dev.virtbase));
 	audio->ready = ioread32(READY(dev.virtbase));
-	dev.audio = *audio;
+	//dev.audio = *audio;
 	//iowrite8(background->red, BG_RED(dev.virtbase) );
 	//iowrite8(background->green, BG_GREEN(dev.virtbase) );
 	//iowrite8(background->blue, BG_BLUE(dev.virtbase) );
@@ -73,7 +73,6 @@ static void read_audio(audio_t *audio)
 static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 {
 	audio_arg_t vla;
-	audio_t audio;
 	switch (cmd) {
 	/*case VGA_BALL_WRITE_BACKGROUND:
 		if (copy_from_user(&vla, (vga_ball_arg_t *) arg,
@@ -83,10 +82,9 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 		break;*/
 
 	case AUDIO_READ:
-			read_audio(&audio); // Read audio
-	  	vla.audio = dev.audio;
-		if (copy_to_user((audio_arg_t *) arg, &vla,
-				 sizeof(audio_arg_t)))
+			read_audio(&vla.audio); // Read audio
+	  	//vla.audio = dev.audio;
+		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))
 			return -EACCES;
 		break;
 
@@ -203,5 +201,5 @@ module_init(audio_init);
 module_exit(audio_exit);
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Stephen A. Edwards, Columbia University");
-MODULE_DESCRIPTION("VGA ball driver");
+MODULE_AUTHOR("Columbia University");
+MODULE_DESCRIPTION("I2S Audio driver");
