@@ -38,16 +38,16 @@ void read_audio() {
       perror("ioctl(READ) failed");
       return;
   }
-	//printf("ready = %d\n", vla.audio.ready);
+	printf("ready = %d\n", vla.audio.ready);
 	left_ready = vla.audio.ready % 2;
 	right_ready = vla.audio.ready / 2;
-	if (left_ready) {
-		left_buf[left_index++] = vla.audio.left;
-		printf("Left = %d\n", vla.audio.left);
-	} else if (right_ready) {
-		right_buf[right_index++] = vla.audio.right;
-		printf("Right = %d\n", vla.audio.right);
-	}
+//	if (left_ready) {
+//		left_buf[left_index++] = vla.audio.left;
+//		printf("Left = %d\n", vla.audio.left);
+//	} else if (right_ready) {
+//		right_buf[right_index++] = vla.audio.right;
+//		printf("Right = %d\n", vla.audio.right);
+//	}
 
   //printf("%02x %02x %02x\n",
 	// vla.background.red, vla.background.green, vla.background.blue);
