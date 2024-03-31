@@ -124,6 +124,7 @@ static int __init vga_ball_probe(struct platform_device *pdev)
 
 	/* Get the address of our registers from the device tree */
 	ret = of_address_to_resource(pdev->dev.of_node, 0, &dev.res);
+	
 	if (ret) {
 		ret = -ENOENT;
 		goto out_deregister;
