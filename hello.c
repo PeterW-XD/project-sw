@@ -19,7 +19,7 @@
 
 #define sample_rate 48000	// 48000kHz
 #define word_length 24		// 24 bits per sample
-#define duration_sec 10		// 10s
+#define duration_sec 3		// 3s
 #define buf_size (sample_rate * word_length)
 
 // int vga_ball_fd;
@@ -27,7 +27,7 @@ int project_top_fd;
 int left_buf[buf_size];
 int right_buf[buf_size];
 int left_ready, right_ready;
-int buf_index = 0;
+int buf_index;
 
 /* Read and print the background color */
 //void print_background_color() {
@@ -41,14 +41,13 @@ void read_audio() {
 	//printf("ready = %d\n", vla.audio.ready);
 	left_ready = vla.audio.ready % 2;
 	right_ready = vla.audio.ready / 2;
-	if (left_ready == 1) {
+	if (left_ready) {
 		left_buf[buf_index++] = vla.audio.left;
 		printf("Left = %d\n", vla.audio.left);
-	} else if (right_ready == 1) {
+	} else if (right_ready) {
 		right_buf[buf_index++] = vla.audio.right;
 		printf("Right = %d\n", vla.audio.right);
-	} else
-		printf("fail\n"); 
+	}
 	
   //printf("%02x %02x %02x\n",
 	// vla.background.red, vla.background.green, vla.background.blue);
@@ -69,6 +68,7 @@ int main()
 {
   // int i;
   // static const char filename[] = "/dev/vga_ball";
+  buf_size = 0;
   static const char filename[] = "/dev/audio";
   static const char file1[] = "./test1.wav";
   static const char file2[] = "./test2.wav";
