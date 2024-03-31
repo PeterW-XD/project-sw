@@ -15,7 +15,7 @@ default: module hello
 module:
 	${MAKE} -C ${KERNEL_SOURCE} SUBDIRS=${PWD} modules
 
-hello: hello.c write_wav.c write_wavh
+hello: hello.c write_wav.c write_wav.h
 	gcc -o hello hello.c write_wav.c write_wav.h
 
 clean:
