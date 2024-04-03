@@ -35,7 +35,7 @@
 
 #define DRIVER_NAME "audio"
 
-// DECLARE_WAIT_QUEUE_HEAD(wq);
+DECLARE_WAIT_QUEUE_HEAD(wq);
 
 /* Device registers */
 #define DATA_L(x) (x)
@@ -49,6 +49,8 @@ struct audio_dev { // audio_dev
 	struct resource res; /* Resource: our registers */
 	void __iomem *virtbase; /* Where registers can be accessed in memory */
         audio_t audio; // audio_color_t background;
+				audio_ready_t ready;
+				int irq_num;
 } dev;
 
 /*
@@ -59,11 +61,24 @@ static void read_audio(audio_t *audio)
 {
 	audio->left = ioread32(DATA_L(dev.virtbase));
 	audio->right = ioread32(DATA_R(dev.virtbase));
-	audio->ready = ioread32(READY(dev.virtbase));
+	ioread32(READY(dev.virtbase));
+	dev.audio = *audio;
 	//iowrite8(background->red, BG_RED(dev.virtbase) );
 	//iowrite8(background->green, BG_GREEN(dev.virtbase) );
 	//iowrite8(background->blue, BG_BLUE(dev.virtbase) );
 	//dev.background = *background;
+}
+
+irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *reg)
+{
+	audio_t audio;
+	read_audio(&audio);
+
+	audio_ready_t ready = {.audio_ready = 1};
+	dev.ready = ready;
+	wake_up_interruptible(&wq);
+
+	return IRQ_RETVAL(1);
 }
 
 /*
@@ -81,10 +96,11 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 			return -EACCES;
 		write_background(&vla.background);
 		break;*/
-
 	case AUDIO_READ:
-			read_audio(&vla.audio); // Read audio
-	  	//vla.audio = dev.audio;
+			wait_event_interruptible_exclusive(wq, dev.ready.audio_ready);
+			vla.audio = dev.audio;
+			audio_ready_t ready = {.audio_ready = 0};
+			dev.ready = ready;
 		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))
 			return -EACCES;
 		break;
@@ -145,12 +161,22 @@ static int __init audio_probe(struct platform_device *pdev)
         
 	/* Set an initial color */
   // write_background(&beige);
+	int irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
+	dev.irq_num = irq;
+	ret = request_irq(irq, (irq_handler_t) irq_handler, 0, "csee4840", NULL);
+
+	if (ret) {
+		printk("request_irq error: %d", ret);
+		ret = -ENOENT;
+		goto out_deregister;
+	}	
 
 	return 0;
 
 out_release_mem_region:
 	release_mem_region(dev.res.start, resource_size(&dev.res));
 out_deregister:
+	free_irq(dev.irq_num, NULL);
 	misc_deregister(&audio_misc_device);
 	return ret;
 }
@@ -161,6 +187,7 @@ static int audio_remove(struct platform_device *pdev)
 {
 	iounmap(dev.virtbase);
 	release_mem_region(dev.res.start, resource_size(&dev.res));
+	free_irq(dev.irq_num, NULL);
 	misc_deregister(&audio_misc_device);
 	return 0;
 }

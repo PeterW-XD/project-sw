@@ -4,12 +4,16 @@
 #include <linux/ioctl.h>
 
 typedef struct {
-	int left, right, ready;
+	int left, right;
 } audio_t;
-  
+
+typedef struct {
+	int audio_ready;
+} audio_ready_t;
 
 typedef struct {
   audio_t audio;
+	audio_ready_t ready;
 } audio_arg_t;
 
 #define AUDIO_MAGIC 'q'

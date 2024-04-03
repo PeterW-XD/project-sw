@@ -23,33 +23,26 @@
 #define buf_size (sample_rate * word_length)
 
 // int vga_ball_fd;
-int project_top_fd;
+int audio_fd;
 int left_buf[buf_size];
 int right_buf[buf_size];
 int left_ready, right_ready;
-int left_index = 0, right_index = 0;
+int buf_index = 0;
 
 /* Read and print the background color */
 //void print_background_color() {
 void read_audio() {
   audio_arg_t vla;
   
-  if (ioctl(project_top_fd, AUDIO_READ, &vla)) {
+  if (ioctl(audio_fd, AUDIO_READ, &vla)) {
       perror("ioctl(READ) failed");
       return;
   }
 	//printf("ready = %d\n", vla.audio.ready);
   //printf("Left = %d\n", vla.audio.left);
   //printf("Right = %d\n", vla.audio.right);
-	left_ready = vla.audio.ready % 2;
-	right_ready = vla.audio.ready / 2;
-	if (left_ready) {
-		left_buf[left_index++] = vla.audio.left;
-		// printf("Left = %d\n", vla.audio.left);
-	} else if (right_ready) {
-		right_buf[right_index++] = vla.audio.right;
-		// printf("Right = %d\n", vla.audio.right);
-	}
+	left_buf[buf_index++] = vla.audio.left;
+	right_buf[buf_index++] = vla.audio.right;
 
   //printf("%02x %02x %02x\n",
 	// vla.background.red, vla.background.green, vla.background.blue);
@@ -68,18 +61,17 @@ void read_audio() {
 
 int main()
 {
-  // static const char filename[] = "/dev/vga_ball";
   static const char filename[] = "/dev/audio";
   static const char file1[] = "./test1.wav";
   static const char file2[] = "./test2.wav";
   printf("Audio record program started\n");
-  if ( (project_top_fd = open(filename, O_RDWR)) == -1) {
+  if ( (audio_fd = open(filename, O_RDWR)) == -1) {
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
   }
-	while (left_index < buf_size & right_index < buf_size) {
+	while (buf_index < buf_size) {
 		read_audio();
-    printf("Index = %d\n", left_index);
+    printf("Index = %d\n", buf_index);
 	}
 	printf("done\n");
 	write_wav(file1, sample_rate, word_length, duration_sec, left_buf);
