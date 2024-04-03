@@ -78,7 +78,7 @@ irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *reg)
 	audio_ready_t ready;
 	read_audio(&audio);
 
-	ready = {.audio_ready = 1};
+	ready.audio_ready = 1;
 	dev.ready = ready;
 	wake_up_interruptible(&wq);
 
@@ -104,7 +104,7 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 	case AUDIO_READ:
 			wait_event_interruptible_exclusive(wq, dev.ready.audio_ready);
 			vla.audio = dev.audio;
-			ready = {.audio_ready = 0};
+			ready.audio_ready = 0;
 			dev.ready = ready;
 		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))
 			return -EACCES;
