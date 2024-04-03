@@ -31,6 +31,9 @@
 #include <linux/of_address.h>
 #include <linux/fs.h>
 #include <linux/uaccess.h>
+#include <linux/sched.h>
+#include <linux/interrupt.h>
+#include <linux/of_irq.h>
 #include "audio.h"
 
 #define DRIVER_NAME "audio"
@@ -72,9 +75,10 @@ static void read_audio(audio_t *audio)
 irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *reg)
 {
 	audio_t audio;
+	audio_ready_t ready;
 	read_audio(&audio);
 
-	audio_ready_t ready = {.audio_ready = 1};
+	ready = {.audio_ready = 1};
 	dev.ready = ready;
 	wake_up_interruptible(&wq);
 
@@ -89,6 +93,7 @@ irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *reg)
 static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 {
 	audio_arg_t vla;
+	audio_ready_t ready;
 	switch (cmd) {
 	/*case VGA_BALL_WRITE_BACKGROUND:
 		if (copy_from_user(&vla, (vga_ball_arg_t *) arg,
@@ -99,7 +104,7 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 	case AUDIO_READ:
 			wait_event_interruptible_exclusive(wq, dev.ready.audio_ready);
 			vla.audio = dev.audio;
-			audio_ready_t ready = {.audio_ready = 0};
+			ready = {.audio_ready = 0};
 			dev.ready = ready;
 		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))
 			return -EACCES;
@@ -133,6 +138,7 @@ static int __init audio_probe(struct platform_device *pdev)
 {
   // vga_ball_color_t beige = { 0xf9, 0xe4, 0xb7 };
 	int ret;
+	int irq;
 
 	/* Register ourselves as a misc device: creates /dev/vga_ball */
 	ret = misc_register(&audio_misc_device);
@@ -161,7 +167,7 @@ static int __init audio_probe(struct platform_device *pdev)
         
 	/* Set an initial color */
   // write_background(&beige);
-	int irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
+	irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
 	dev.irq_num = irq;
 	ret = request_irq(irq, (irq_handler_t) irq_handler, 0, "csee4840", NULL);
 
