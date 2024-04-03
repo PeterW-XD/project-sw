@@ -19,7 +19,7 @@
 
 #define sample_rate 48000	// 48000kHz
 #define word_length 24		// 24 bits per sample
-#define duration_sec 3		// 3s
+#define duration_sec 1		// 1s
 #define buf_size (sample_rate * word_length)
 
 // int vga_ball_fd;
