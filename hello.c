@@ -39,7 +39,7 @@ void read_audio() {
       return;
   }
 	//printf("ready = %d\n", vla.audio.ready);
-  printf("Left = %d\n", vla.audio.left);
+  //printf("Left = %d\n", vla.audio.left);
   //printf("Right = %d\n", vla.audio.right);
 	left_buf[buf_index++] = vla.audio.left;
 	right_buf[buf_index++] = vla.audio.right;
@@ -74,8 +74,8 @@ int main()
     //printf("Index = %d\n", buf_index);
 	}
 	printf("done\n");
-	write_wav(file1, sample_rate, word_length, duration_sec, left_buf);
-	write_wav(file2, sample_rate, word_length, duration_sec, right_buf);
+	write_wav(file1, sample_rate * duration_sec, left_buf, sample_rate);
+	write_wav(file2, sample_rate * duration_sec, right_buf, sample_rate);
 
 //  static const vga_ball_color_t colors[] = {
 //    { 0xff, 0x00, 0x00 }, /* Red */

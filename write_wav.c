@@ -25,7 +25,7 @@ void write_wav(char * filename, unsigned long num_samples, short int * data, int
     unsigned long i;    /* counter for samples */
  
     num_channels = 1;   /* monoaural */
-    bytes_per_sample = 2;
+    bytes_per_sample = 3;
  
     if (s_rate<=0) sample_rate = 44100;
     else sample_rate = (unsigned int) s_rate;
