@@ -33,7 +33,6 @@ void write_wav(const char * filename, unsigned long num_samples, int * data, int
     byte_rate = sample_rate*num_channels*bytes_per_sample;
  
     wav_file = fopen(filename, "wb");
-    assert(wav_file);   /* make sure it opened */
  
     /* write RIFF header */
     fwrite("RIFF", 1, 4, wav_file);
