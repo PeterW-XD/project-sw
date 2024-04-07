@@ -33,7 +33,7 @@ void i2s_install() {
     .communication_format = i2s_comm_format_t(I2S_COMM_FORMAT_STAND_I2S),
     .intr_alloc_flags = 0,
     .dma_buf_count = 8,       
-    .dma_buf_len = bufferLen,
+    .dma_buf_len = bufferLen, // dma_buffer_size = dma_buf_len * slot_num * data_bit_width / 8 <= 4092
     .use_apll = false
   };
  
@@ -90,7 +90,7 @@ void loop() {
 
   // Buttons
   if (!digitalRead(BUTTON)) {
-    // unsigned long startTime = millis();
+    unsigned long startTime = millis();
     // while (millis() - startTime < duration) {}
 
     // False print statements to "lock range" on serial plotter display
@@ -138,7 +138,10 @@ void loop() {
         Serial.print(mean2L);
         Serial.print(" ");
         Serial.println(mean2R);
+
+        unsigned long stopTime = millis();
       }
     }
   }
+  Serial.println(stopTime - startTime);
 }
