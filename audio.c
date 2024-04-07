@@ -169,7 +169,7 @@ static int __init audio_probe(struct platform_device *pdev)
   // write_background(&beige);
 	irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
 	dev.irq_num = irq;
-	ret = request_irq(irq, (irq_handler_t) irq_handler, 0, "csee4840", NULL);
+	ret = request_irq(irq, (irq_handler_t) irq_handler, 0, "csee4840_audio", NULL);
 
 	if (ret) {
 		printk("request_irq error: %d", ret);
