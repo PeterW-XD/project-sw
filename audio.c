@@ -64,7 +64,7 @@ static void read_audio(audio_t *audio)
 	audio->left = ioread32(DATA_L(dev.virtbase));
 	audio->right = ioread32(DATA_R(dev.virtbase));
 	ioread32(RESET_IRQ(dev.virtbase));
-	dev.audio = *audio;
+	dev.audio = audio;
 	//iowrite8(background->red, BG_RED(dev.virtbase) );
 	//dev.background = *background;
 }
@@ -80,7 +80,7 @@ irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *reg)
 	read_audio(&audio);
 
 	ready.audio_ready = 1;
-	dev.ready = *ready;
+	dev.ready = ready;
 	wake_up_interruptible(&wq);
 
 	return IRQ_RETVAL(1);
@@ -108,7 +108,7 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 			// Data is ready
 			vla.audio = dev.audio;
 			ready.audio_ready = 0;
-			dev.ready = *ready;
+			dev.ready = ready;
 		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))
 			return -EACCES;
 		break;
