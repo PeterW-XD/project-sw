@@ -14,8 +14,7 @@
  * "make" to build
  * insmod vga_ball.ko
  *
- * Check code style with
- * checkpatch.pl --file --no-tree vga_ball.c
+ * Reference: NoCallerID
  */
 
 #include <linux/module.h>
@@ -38,12 +37,13 @@
 
 #define DRIVER_NAME "audio"
 
+// Initialize a wait queue to sleep user level process until irq raised
 DECLARE_WAIT_QUEUE_HEAD(wq);
 
 /* Device registers */
 #define DATA_L(x) (x)
 #define DATA_R(x) ((x)+4)
-#define READY(x) ((x)+8)
+#define RESET_IRQ(x) ((x)+8)
 
 /*
  * Information about our device
@@ -63,14 +63,16 @@ static void read_audio(audio_t *audio)
 {
 	audio->left = ioread32(DATA_L(dev.virtbase));
 	audio->right = ioread32(DATA_R(dev.virtbase));
-	ioread32(READY(dev.virtbase));
+	ioread32(RESET_IRQ(dev.virtbase));
 	dev.audio = *audio;
 	//iowrite8(background->red, BG_RED(dev.virtbase) );
-	//iowrite8(background->green, BG_GREEN(dev.virtbase) );
-	//iowrite8(background->blue, BG_BLUE(dev.virtbase) );
 	//dev.background = *background;
 }
 
+/*
+ * Handle interrupts raised by our device. Read samples,
+ * clear the interrupt, and wake the user level program.
+ */
 irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *reg)
 {
 	audio_t audio;
@@ -78,7 +80,7 @@ irq_handler_t irq_handler(int irq, void *dev_id, struct pt_regs *reg)
 	read_audio(&audio);
 
 	ready.audio_ready = 1;
-	dev.ready = ready;
+	dev.ready = *ready;
 	wake_up_interruptible(&wq);
 
 	return IRQ_RETVAL(1);
@@ -101,10 +103,12 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 		write_background(&vla.background);
 		break;*/
 	case AUDIO_READ:
+			// Sleep the process until woken by the interrupt handler, and the data is ready
 			wait_event_interruptible_exclusive(wq, dev.ready.audio_ready);
+			// Data is ready
 			vla.audio = dev.audio;
 			ready.audio_ready = 0;
-			dev.ready = ready;
+			dev.ready = *ready;
 		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))
 			return -EACCES;
 		break;
@@ -165,9 +169,13 @@ static int __init audio_probe(struct platform_device *pdev)
 	}
         
 	/* Set an initial color */
-  // write_background(&beige);
+  	// write_background(&beige);
+
+	/* Determine the interrupt number associated with our device */
 	irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
 	dev.irq_num = irq;
+
+	/* Request our interrupt line and register our handler */
 	ret = request_irq(irq, (irq_handler_t) irq_handler, 0, "csee4840_audio", NULL);
 
 	if (ret) {

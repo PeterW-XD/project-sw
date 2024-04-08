@@ -35,7 +35,7 @@ void read_audio() {
   audio_arg_t vla;
   
   if (ioctl(audio_fd, AUDIO_READ, &vla)) {
-      perror("ioctl(READ) failed");
+      perror("ioctl(AUDIO_READ) failed");
       return;
   }
   left_buf[buf_index++] = vla.audio.left;

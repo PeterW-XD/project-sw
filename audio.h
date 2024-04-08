@@ -4,7 +4,7 @@
 #include <linux/ioctl.h>
 
 typedef struct {
-	int left, right;
+	unsigned int left, right;
 } audio_t;
 
 typedef struct {
