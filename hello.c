@@ -77,11 +77,11 @@ int main()
 	}
 	printf("done\n");
 	for (int i = 0; i < buf_size; i++) {
-		out_right[i] = right_buf / 256;
-		our_left[i] = left_buf / 256;
+		out_right[i] = right_buf[i] / 256;
+		our_left[i] = left_buf[i] / 256;
 	}
-	write_wav(file2, sample_rate * duration_sec, (short int)right_buf, sample_rate);
-	write_wav(file1, sample_rate * duration_sec, (short int)left_buf, sample_rate);
+	write_wav(file2, sample_rate * duration_sec, out_right, sample_rate);
+	write_wav(file1, sample_rate * duration_sec, out_left, sample_rate);
 	//write_wav(file2, sample_rate * duration_sec, right_buf, sample_rate);
 
 //  static const vga_ball_color_t colors[] = {
