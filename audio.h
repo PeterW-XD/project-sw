@@ -4,8 +4,8 @@
 #include <linux/ioctl.h>
 
 typedef struct {
-	unsigned int left1, right1;
-	unsigned int left2, right2;
+	 int left1, right1;
+	 int left2, right2;
 } audio_t;
 
 typedef struct {
