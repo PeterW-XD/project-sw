@@ -1,3 +1,4 @@
+// Reference: https://karplus4arduino.wordpress.com/2011/10/08/making-wav-files-from-c-programs/
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -13,7 +14,12 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
         word >>= 8;
     }
 }
- 
+/*
+@ filename: .wav directory
+@ num_samples: number of samples
+@ data: data array
+@ s_rate: sample rate
+*/
 void write_wav(const char * filename, unsigned long num_samples, short int * data, int s_rate)
 {
     FILE* wav_file;

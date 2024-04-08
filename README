@@ -1,2 +1,2 @@
 Problems:
-1. It cannot read data at a speed of 48kHz (sampling rate)
+1. data output of each channel with unexpected 0

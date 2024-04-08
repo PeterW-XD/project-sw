@@ -57,8 +57,7 @@ struct audio_dev { // audio_dev
 } dev;
 
 /*
- * Write segments of a single digit
- * Assumes digit is in range and the device information has been set up
+ * Read audio data from device
  */
 static void read_audio(audio_t *audio)
 {
