@@ -64,7 +64,7 @@ static void read_audio(audio_t *audio)
 	audio->left = ioread32(DATA_L(dev.virtbase));
 	audio->right = ioread32(DATA_R(dev.virtbase));
 	ioread32(RESET_IRQ(dev.virtbase));
-	dev.audio = audio;
+	dev.audio = *audio;
 	//iowrite8(background->red, BG_RED(dev.virtbase) );
 	//dev.background = *background;
 }
