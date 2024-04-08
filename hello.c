@@ -78,7 +78,7 @@ int main()
 	printf("done\n");
 	for (int i = 0; i < buf_size; i++) {
 		out_right[i] = right_buf[i] / 256;
-		our_left[i] = left_buf[i] / 256;
+		out_left[i] = left_buf[i] / 256;
 	}
 	write_wav(file2, sample_rate * duration_sec, out_right, sample_rate);
 	write_wav(file1, sample_rate * duration_sec, out_left, sample_rate);
