@@ -38,8 +38,9 @@ void read_audio() {
       perror("ioctl(AUDIO_READ) failed");
       return;
   }
-  left_buf[buf_index++] = vla.audio.left;
-  right_buf[buf_index++] = vla.audio.right;
+  left_buf[buf_index] = vla.audio.left;
+  right_buf[buf_index] = vla.audio.right;
+  buf_index++;
 }
 
 int main()
