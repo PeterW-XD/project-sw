@@ -64,10 +64,10 @@ int main()
 	}
 	printf("done\n");
 	for (int i = 0; i < buf_size; i++) {    // Truncate to short
-    fprintf(fd1_L, "%d\n", left1_buf[i]);
-    fprintf(fd1_R, "%d\n", right1_buf[i]);
-    fprintf(fd2_L, "%d\n", left2_buf[i]);
-    fprintf(fd2_R, "%d\n", right2_buf[i]);
+    fprintf(fd1_L, "%d\n", (left1_buf[i] << 8) >> 8);
+    fprintf(fd1_R, "%d\n", (right1_buf[i] << 8) >> 8);
+    fprintf(fd2_L, "%d\n", (left2_buf[i] << 8) >> 8);
+    fprintf(fd2_R, "%d\n", (right2_buf[i] << 8) >> 8);
 		// out_right[i] = right_buf[i] / 256;
 		// out_left[i] = left_buf[i] / 256;
 	}
