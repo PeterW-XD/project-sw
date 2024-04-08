@@ -61,7 +61,7 @@ void write_wav(const char * filename, unsigned long num_samples, short int * dat
     for (i=0; i< num_samples; i++)
     {   
         write_little_endian((unsigned int)(data[i]), bytes_per_sample, wav_file);
-        fprintf(fd, "%u\n", (unsigned int)data[i]);
+        fprintf(fd, "%d\n", data[i]);
     }
 
     fclose(wav_file);

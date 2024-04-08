@@ -73,7 +73,7 @@ static void read_audio(audio_t *audio)
  * Handle interrupts raised by our device. Read samples,
  * clear the interrupt, and wake the user level program.
  */
-irqreturn_t  irq_handler(int irq, void *dev_id)//, struct pt_regs *reg)
+static irqreturn_t  irq_handler(int irq, void *dev_id, struct pt_regs *regs)
 {
 	audio_t audio;
 	audio_ready_t ready;
@@ -83,6 +83,7 @@ irqreturn_t  irq_handler(int irq, void *dev_id)//, struct pt_regs *reg)
 	dev.ready = ready;
 	wake_up_interruptible(&wq);
 
+	//  IRQ_RETVAL(val): If val is non-zero, this macro returns IRQ_HANDLED
 	return IRQ_RETVAL(1);
 }
 
