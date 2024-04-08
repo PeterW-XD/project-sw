@@ -26,6 +26,8 @@
 int audio_fd;
 int left_buf[buf_size];
 int right_buf[buf_size];
+short int out_left[buf_size];
+short int	out_right[buf_size];
 int left_ready, right_ready;
 int buf_index = 0;
 
@@ -74,6 +76,10 @@ int main()
     //printf("Index = %d\n", buf_index);
 	}
 	printf("done\n");
+	for (int i = 0; i < buf_size; i++) {
+		out_right[i] = right_buf / 256;
+		our_left[i] = left_buf / 256;
+	}
 	write_wav(file2, sample_rate * duration_sec, (short int)right_buf, sample_rate);
 	write_wav(file1, sample_rate * duration_sec, (short int)left_buf, sample_rate);
 	//write_wav(file2, sample_rate * duration_sec, right_buf, sample_rate);
