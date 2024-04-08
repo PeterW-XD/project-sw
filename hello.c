@@ -19,7 +19,7 @@
 
 #define sample_rate 48000	// 48000kHz
 #define word_length 24		// 24 bits per sample
-#define duration_sec 1		// 1s
+#define duration_sec 2		// 1s
 #define buf_size (sample_rate * duration_sec)
 
 // int vga_ball_fd;
@@ -74,8 +74,8 @@ int main()
     //printf("Index = %d\n", buf_index);
 	}
 	printf("done\n");
-	write_wav(file2, sample_rate * duration_sec, right_buf, sample_rate);
-	write_wav(file1, sample_rate * duration_sec, left_buf, sample_rate);
+	write_wav(file2, sample_rate * duration_sec, (short int)right_buf, sample_rate);
+	write_wav(file1, sample_rate * duration_sec, (short int)left_buf, sample_rate);
 	//write_wav(file2, sample_rate * duration_sec, right_buf, sample_rate);
 
 //  static const vga_ball_color_t colors[] = {
