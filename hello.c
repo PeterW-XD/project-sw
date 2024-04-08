@@ -24,10 +24,10 @@
 
 // int vga_ball_fd;
 int audio_fd;
-int left_buf[buf_size];
-int right_buf[buf_size];
-short int out_left[buf_size];
-short int	out_right[buf_size];
+int left1_buf[buf_size], right1_buf[buf_size];
+int left2_buf[buf_size], right2_buf[buf_size];
+// short int out_left[buf_size];
+// short int out_right[buf_size];
 int buf_index = 0;
 
 // Read audio data
@@ -38,16 +38,22 @@ void read_audio() {
       perror("ioctl(AUDIO_READ) failed");
       return;
   }
-  left_buf[buf_index] = vla.audio.left;
-  right_buf[buf_index] = vla.audio.right;
+  left1_buf[buf_index] = vla.audio.left1;
+  right1_buf[buf_index] = vla.audio.right1;
+  left2_buf[buf_index] = vla.audio.left2;
+  right2_buf[buf_index] = vla.audio.right2;
   buf_index++;
 }
 
 int main()
 {
   static const char filename[] = "/dev/audio";  // Open the driver
-  static const char file1[] = "./test1.wav";    // Microphone 1 .wav directory
-  static const char file2[] = "./test2.wav";
+  // static const char file1[] = "./test1.wav";    // Microphone 1 .wav directory
+  // static const char file2[] = "./test2.wav";
+  FILE *fd1_L = fopen("data1_L.txt", "w");
+  FILE *fd1_R = fopen("data1_R.txt", "w");
+  FILE *fd2_L = fopen("data2_L.txt", "w");
+  FILE *fd2_R = fopen("data2_R.txt", "w");
   printf("Audio record program started\n");
   if ( (audio_fd = open(filename, O_RDWR)) == -1) {
     fprintf(stderr, "could not open %s\n", filename);
@@ -58,12 +64,16 @@ int main()
 	}
 	printf("done\n");
 	for (int i = 0; i < buf_size; i++) {    // Truncate to short
-		out_right[i] = right_buf[i] / 256;
-		out_left[i] = left_buf[i] / 256;
+    fprintf(fd1_L, "%d\n", left1_buf[i]);
+    fprintf(fd1_R, "%d\n", right1_buf[i]);
+    fprintf(fd2_L, "%d\n", left2_buf[i]);
+    fprintf(fd2_R, "%d\n", right2_buf[i]);
+		// out_right[i] = right_buf[i] / 256;
+		// out_left[i] = left_buf[i] / 256;
 	}
-	write_wav(file2, sample_rate * duration_sec, out_right, sample_rate);
-	write_wav(file1, sample_rate * duration_sec, out_left, sample_rate);
-	//write_wav(file2, sample_rate * duration_sec, right_buf, sample_rate);
+
+	// write_wav(file1, sample_rate * duration_sec, out_left, sample_rate);
+	// write_wav(file2, sample_rate * duration_sec, right_buf, sample_rate);
   
   printf("Audio record program terminating\n");
   return 0;
