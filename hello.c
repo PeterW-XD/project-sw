@@ -28,8 +28,8 @@ int left_buf[buf_size];
 int right_buf[buf_size];
 short int out_left[buf_size];
 short int	out_right[buf_size];
-int left_ready, right_ready;
-int buf_index = 0;
+int left_index = 0;
+int right_index = 0;
 
 /* Read and print the background color */
 //void print_background_color() {
@@ -43,8 +43,10 @@ void read_audio() {
 	//printf("ready = %d\n", vla.audio.ready);
   //printf("Left = %d\n", vla.audio.left);
   //printf("Right = %d\n", vla.audio.right);
-	left_buf[buf_index++] = vla.audio.left;
-	right_buf[buf_index++] = vla.audio.right;
+	if (vla.audio.left != 0)
+		left_buf[left_index++] = vla.audio.left;
+	if (vla.audio.right != 0)
+		right_buf[right_index++] = vla.audio.right;
 
   //printf("%02x %02x %02x\n",
 	// vla.background.red, vla.background.green, vla.background.blue);
@@ -71,7 +73,7 @@ int main()
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
   }
-	while (buf_index < buf_size) {
+	while (left_index < buf_size) {
 		read_audio();
     //printf("Index = %d\n", buf_index);
 	}
