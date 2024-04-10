@@ -26,8 +26,8 @@
 int audio_fd;
 int left1_buf[buf_size], right1_buf[buf_size];
 int left2_buf[buf_size], right2_buf[buf_size];
-// short int out_left[buf_size];
-// short int out_right[buf_size];
+short int out_left[buf_size];
+short int out_right[buf_size];
 int buf_index = 0;
 
 // Read audio data
@@ -64,16 +64,16 @@ int main()
 	}
 	printf("done\n");
 	for (int i = 0; i < buf_size; i++) {    // Truncate to short
-    fprintf(fd1_L, "%d\n", (left1_buf[i] << 8) >> 8);
-    fprintf(fd1_R, "%d\n", (right1_buf[i] << 8) >> 8);
+    // fprintf(fd1_L, "%d\n", (left1_buf[i] << 8) >> 8);
+    // fprintf(fd1_R, "%d\n", (right1_buf[i] << 8) >> 8);
     fprintf(fd2_L, "%d\n", (left2_buf[i] << 8) >> 8);
     fprintf(fd2_R, "%d\n", (right2_buf[i] << 8) >> 8);
-		// out_right[i] = right_buf[i] / 256;
-		// out_left[i] = left_buf[i] / 256;
+		out_right[i] = right1_buf[i] / 256;
+		out_left[i] = left1_buf[i] / 256;
 	}
 
-	// write_wav(file1, sample_rate * duration_sec, out_left, sample_rate);
-	// write_wav(file2, sample_rate * duration_sec, right_buf, sample_rate);
+	write_wav(file1, sample_rate * duration_sec, out_left, sample_rate);
+	write_wav(file2, sample_rate * duration_sec, out_right, sample_rate);
   
   printf("Audio record program terminating\n");
   return 0;
