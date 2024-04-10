@@ -48,8 +48,8 @@ void read_audio() {
 int main()
 {
   static const char filename[] = "/dev/audio";  // Open the driver
-  // static const char file1[] = "./test1.wav";    // Microphone 1 .wav directory
-  // static const char file2[] = "./test2.wav";
+  static const char file1[] = "./test1.wav";    // Microphone 1 .wav directory
+  static const char file2[] = "./test2.wav";
   FILE *fd1_L = fopen("data1_L.txt", "w");
   FILE *fd1_R = fopen("data1_R.txt", "w");
   FILE *fd2_L = fopen("data2_L.txt", "w");
