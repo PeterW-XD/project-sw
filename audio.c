@@ -39,14 +39,14 @@
 #define DRIVER_NAME "audio"
 
 // Initialize a wait queue to sleep user level process until irq raised
-DECLARE_WAIT_QUEUE_HEAD(wq);
+// DECLARE_WAIT_QUEUE_HEAD(wq);
 
 /* Device registers */
 #define DATA1_L(x) (x)
 #define DATA1_R(x) ((x)+4)
 #define DATA2_L(x) ((x)+8)
 #define DATA2_R(x) ((x)+12)
-#define RESET_IRQ(x) ((x)+16)
+// #define RESET_IRQ(x) ((x)+16)
 
 /*
  * Information about our device
@@ -55,8 +55,8 @@ struct audio_dev { // audio_dev
 	struct resource res; /* Resource: our registers */
 	void __iomem *virtbase; /* Where registers can be accessed in memory */
         audio_t audio; // audio_color_t background;
-				audio_ready_t ready;
-				int irq_num;
+				// audio_ready_t ready;
+				// int irq_num;
 } dev;
 
 /*
@@ -68,7 +68,7 @@ static void read_audio(audio_t *audio)
 	audio->right1 = ioread32(DATA1_R(dev.virtbase));
 	audio->left2 = ioread32(DATA2_L(dev.virtbase));
 	audio->right2 = ioread32(DATA2_R(dev.virtbase));
-	ioread32(RESET_IRQ(dev.virtbase));
+	// ioread32(RESET_IRQ(dev.virtbase));
 	dev.audio = *audio;
 	//iowrite8(background->red, BG_RED(dev.virtbase) );
 	//dev.background = *background;
@@ -78,19 +78,19 @@ static void read_audio(audio_t *audio)
  * Handle interrupts raised by our device. Read samples,
  * clear the interrupt, and wake the user level program.
  */
-static irqreturn_t  irq_handler(int irq, void *dev_id, struct pt_regs *regs)
-{
-	audio_t audio;
-	audio_ready_t ready;
-	read_audio(&audio);
+// static irqreturn_t  irq_handler(int irq, void *dev_id, struct pt_regs *regs)
+// {
+// 	audio_t audio;
+// 	audio_ready_t ready;
+// 	read_audio(&audio);
 
-	ready.audio_ready = 1;
-	dev.ready = ready;
-	wake_up_interruptible(&wq);
+// 	ready.audio_ready = 1;
+// 	dev.ready = ready;
+// 	wake_up_interruptible(&wq);
 
-	//  IRQ_RETVAL(val): If val is non-zero, this macro returns IRQ_HANDLED
-	return IRQ_RETVAL(1);
-}
+// 	//  IRQ_RETVAL(val): If val is non-zero, this macro returns IRQ_HANDLED
+// 	return IRQ_RETVAL(1);
+// }
 
 /*
  * Handle ioctl() calls from userspace:
@@ -100,7 +100,7 @@ static irqreturn_t  irq_handler(int irq, void *dev_id, struct pt_regs *regs)
 static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 {
 	audio_arg_t vla;
-	audio_ready_t ready;
+	// audio_ready_t ready;
 	switch (cmd) {
 	/*case VGA_BALL_WRITE_BACKGROUND:
 		if (copy_from_user(&vla, (vga_ball_arg_t *) arg,
@@ -110,11 +110,12 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 		break;*/
 	case AUDIO_READ:
 			// Sleep the process until woken by the interrupt handler, and the data is ready
-			wait_event_interruptible_exclusive(wq, dev.ready.audio_ready);
+			// wait_event_interruptible_exclusive(wq, dev.ready.audio_ready);
 			// Data is ready
-			vla.audio = dev.audio;
-			ready.audio_ready = 0;
-			dev.ready = ready;
+			read_audio(&vla.audio);
+			// vla.audio = dev.audio;
+			// ready.audio_ready = 0;
+			// dev.ready = ready;
 		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))
 			return -EACCES;
 		break;
@@ -147,7 +148,7 @@ static int __init audio_probe(struct platform_device *pdev)
 {
   // vga_ball_color_t beige = { 0xf9, 0xe4, 0xb7 };
 	int ret;
-	int irq;
+	// int irq;
 
 	/* Register ourselves as a misc device: creates /dev/vga_ball */
 	ret = misc_register(&audio_misc_device);
@@ -178,24 +179,24 @@ static int __init audio_probe(struct platform_device *pdev)
   	// write_background(&beige);
 
 	/* Determine the interrupt number associated with our device */
-	irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
-	dev.irq_num = irq;
+	// irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
+	// dev.irq_num = irq;
 
 	/* Request our interrupt line and register our handler */
-	ret = request_irq(irq, (irq_handler_t) irq_handler, 0, "csee4840_audio", NULL);
+	// ret = request_irq(irq, (irq_handler_t) irq_handler, 0, "csee4840_audio", NULL);
 
-	if (ret) {
-		printk("request_irq error: %d", ret);
-		ret = -ENOENT;
-		goto out_deregister;
-	}	
+	// if (ret) {
+	// 	printk("request_irq error: %d", ret);
+	// 	ret = -ENOENT;
+	// 	goto out_deregister;
+	// }	
 
 	return 0;
 
 out_release_mem_region:
 	release_mem_region(dev.res.start, resource_size(&dev.res));
 out_deregister:
-	free_irq(dev.irq_num, NULL);
+	// free_irq(dev.irq_num, NULL);
 	misc_deregister(&audio_misc_device);
 	return ret;
 }
@@ -206,7 +207,7 @@ static int audio_remove(struct platform_device *pdev)
 {
 	iounmap(dev.virtbase);
 	release_mem_region(dev.res.start, resource_size(&dev.res));
-	free_irq(dev.irq_num, NULL);
+	// free_irq(dev.irq_num, NULL);
 	misc_deregister(&audio_misc_device);
 	return 0;
 }
