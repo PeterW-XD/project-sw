@@ -1,4 +1,4 @@
-/* * Device driver for the VGA video generator
+/* * Device driver for the I2S
  *
  * A Platform device implemented using the misc subsystem
  *
@@ -10,11 +10,12 @@
  *               drivers/misc/arm-charlcd.c
  * http://www.linuxforu.com/tag/linux-device-drivers/
  * http://free-electrons.com/docs/
- *
+ * NoCallerID
+ * 
  * "make" to build
- * insmod vga_ball.ko
+ * insmod audio.ko
  *
- * Reference: NoCallerID
+ * Team: Sound-localizer
  */
 
 #include <linux/module.h>

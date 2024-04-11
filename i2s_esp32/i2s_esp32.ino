@@ -4,13 +4,14 @@
 #define BUTTON 13
 
 // Connections to INMP441 I2S microphone
-#define I2S_WS 5
-#define I2S_SD 18
-#define I2S_SCK 19
- 
-#define I2S_WS2 16
-#define I2S_SD2 17
-#define I2S_SCK2 21
+#define I2S_SCK 5
+#define I2S_WS 18
+#define I2S_SD 19
+
+#define I2S_SCK2 5
+#define I2S_WS2 17
+#define I2S_SD2 21
+
 
 // Use I2S Processor 0： there are two of them
 #define I2S_PORT I2S_NUM_0
@@ -90,7 +91,7 @@ void loop() {
 
   // Buttons
   if (!digitalRead(BUTTON)) {
-    unsigned long startTime = millis();
+    // unsigned long startTime = millis();
     // while (millis() - startTime < duration) {}
 
     // False print statements to "lock range" on serial plotter display
@@ -139,9 +140,9 @@ void loop() {
         Serial.print(" ");
         Serial.println(mean2R);
 
-        unsigned long stopTime = millis();
+        // unsigned long stopTime = millis();
       }
     }
   }
-  Serial.println(stopTime - startTime);
+  // Serial.println(stopTime - startTime);
 }
