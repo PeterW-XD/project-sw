@@ -39,11 +39,14 @@ void read_audio() {
       perror("ioctl(AUDIO_READ) failed");
       return;
   }
-  left1_buf[buf_index] = vla.audio.left1;
-  right1_buf[buf_index] = vla.audio.right1;
-  left2_buf[buf_index] = vla.audio.left2;
-  right2_buf[buf_index] = vla.audio.right2;
-  buf_index++;
+  if (vla.audio.left1 != 0) {
+    left1_buf[buf_index] = vla.audio.left1;
+    right1_buf[buf_index] = vla.audio.right1;
+    left2_buf[buf_index] = vla.audio.left2;
+    right2_buf[buf_index] = vla.audio.right2;
+    buf_index++;
+  }
+
 }
 
 int main()
