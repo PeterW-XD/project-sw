@@ -21,7 +21,7 @@
 #define word_length 24		// 24 bits per sample
 #define duration_sec 1		// 1s
 // #define BUF_SIZE (SAMPLE_RATE * duration_sec)
-#define BUF_SIZE 4096
+#define BUF_SIZE 96000
 
 // int vga_ball_fd;
 int audio_fd;
@@ -39,11 +39,11 @@ void read_audio() {
       perror("ioctl(AUDIO_READ) failed");
       return;
   }
-    left1_buf[buf_index] = vla.audio.left1;
-    right1_buf[buf_index] = vla.audio.right1;
-    left2_buf[buf_index] = vla.audio.left2;
-    right2_buf[buf_index] = vla.audio.right2;
-    buf_index++;
+  left1_buf[buf_index] = vla.audio.left1;
+  right1_buf[buf_index] = vla.audio.right1;
+  left2_buf[buf_index] = vla.audio.left2;
+  right2_buf[buf_index] = vla.audio.right2;
+  buf_index++;
 }
 
 int main()
