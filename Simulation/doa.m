@@ -1,18 +1,19 @@
 % Implements DOA algorithm on simulated linear array
+close all
 
 % Array Parameters
 m = 8; % number of microphones
-d = 0.10;  % distance between microphones (in meters)
+d = 0.104;  % distance between microphones (in meters)
 Fs = 48000;  % sampling rate of the microphones
 
 % Signal Parameters
-f = 9000;  % frequency of signal of interest
-aoa = 20;  % intended angle of arrival (in degrees)
-snr = 10;  % signal power to noise power ratio in dBW
+f = 2000;  % frequency of signal of interest
+aoa = -70;  % intended angle of arrival (in degrees)
+snr = 20;  % signal power to noise power ratio in dBW
 
 % Trial Parameters
 n = 1024;  % samples in data block
-snum = 12; % number of sectors to split half-circle into
+snum = 256; % number of sectors to split half-circle into
 
 bnum = snum+1;  % number of beams to form
 arrsig = generate_array_signals(m, d, aoa, f, n, Fs, snr);
@@ -41,7 +42,7 @@ for i=1:m
 end
 
 % Extract bin with FFT peak
-[mx, tbin] = max(spatial_spectrum(1, 1:L/2));
+[~, tbin] = max(spatial_spectrum(1, 1:L/2));
 
 % Compute delay matrix
 dmat = zeros(m, bnum);  % Rows are sensors, columns are directions
@@ -62,3 +63,12 @@ pwrvec = abs(outvec).^2;
 
 [pmax, ind] = max(pwrvec);
 doa_res = angs(ind)*180/pi;
+
+% Plot PSD
+figure(3);
+polarplot(angs, pwrvec);
+title("PSD");
+thetalim([-90, 90]);
+ax = gca;
+ax.ThetaZeroLocation = 'top';
+ax.ThetaDir = 'clockwise';

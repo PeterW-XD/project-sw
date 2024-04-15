@@ -1,14 +1,13 @@
-function [doa_res, pmax] = evaluate_doa(input_signal, m, d, f, snum)
+function [doa_res, pmax, tbin] = evaluate_doa(input_signal, m, d, f, snum)
     % Array Parameters
     % m: number of microphones
     % d: distance between microphones (in meters)
-    
+
     % Signal Parameters
     % f: frequency of signal of interest
     % snum: number of sectors to split half-circle into
 
     % Trial Parameters
-    n = length(input_signal);  % samples in data block
     bnum = snum+1;  % number of beams to form
 
     % Generate FFT for each microphone
@@ -20,8 +19,8 @@ function [doa_res, pmax] = evaluate_doa(input_signal, m, d, f, snum)
     end
 
     % Extract bin with FFT peak
-    [~, tbin] = max(spatial_spectrum(1, 1:L/2));
-    tbin = round(tbin);  % Round to nearest integer
+    [~, tbin] = max(spatial_spectrum(1, 30:L/2));
+    tbin = tbin + 30;
 
     % Compute delay matrix
     dmat = zeros(m, bnum);  % Rows are sensors, columns are directions

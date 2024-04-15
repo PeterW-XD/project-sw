@@ -1,17 +1,21 @@
+close all
+
 % Array Parameters
 m = 8; % number of microphones
-d = 0.10;  % distance between microphones (in meters)
+d = 0.104;  % distance between microphones (in meters)
 Fs = 48000;  % sampling rate of the microphones
 
 % Signal Parameters
-f = 1500;  % frequency of signal of interest
-aoa = -45;  % intended angle of arrival (in degrees)
-snr = 10;  % noise power in dB
+f = 2000;  % frequency of signal of interest
+aoa = -5;  % intended angle of arrival (in degrees)
+snr = 1000;  % signal power to noise power ratio in dBW
 
 % Trial Parameters
 n = 1024;  % samples in data block
-bnum = 8;  % number of directions to form beams for (evenly distributed)
-tdir = 8;  % direction to apply reverse delay in
+snum = 12; % number of sectors to split half-circle into
+
+bnum = snum+1;  % number of beams to form
+tdir = 12;  % direction to apply reverse delay in
 
 arrsig = generate_array_signals(m, d, aoa, f, n, Fs, snr);
 
