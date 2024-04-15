@@ -1,4 +1,4 @@
-function [doa_res, pmax, tbin] = evaluate_doa(input_signal, m, d, f, snum)
+function [doa_res, pmax, tbin, pwrvec] = evaluate_doa(input_signal, m, d, f, snum)
     % Array Parameters
     % m: number of microphones
     % d: distance between microphones (in meters)

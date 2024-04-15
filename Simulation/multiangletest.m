@@ -21,7 +21,7 @@ res = zeros(2, length(angs));
 for a = 1:length(angs)
     arrsig = generate_array_signals(m, d, angs(a), f, n, Fs, snr);
 
-    [resang, respwr, ~] = evaluate_doa(arrsig, m, d, f, snum);
+    [resang, respwr, ~, ~] = evaluate_doa(arrsig, m, d, f, snum);
     res(:, a) = [resang; respwr];
 end
 
