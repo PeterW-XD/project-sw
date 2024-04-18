@@ -46,7 +46,9 @@ DECLARE_WAIT_QUEUE_HEAD(wq);
 #define DATA1_R(x) ((x)+4)
 #define DATA2_L(x) ((x)+8)
 #define DATA2_R(x) ((x)+12)
-#define RESET_IRQ(x) ((x)+16)
+// #define RESET_IRQ(x) ((x)+16)
+
+#define ADDR(x) (x)
 
 /*
  * Information about our device
@@ -55,8 +57,9 @@ struct audio_dev { // audio_dev
 	struct resource res; /* Resource: our registers */
 	void __iomem *virtbase; /* Where registers can be accessed in memory */
         audio_t audio; // audio_color_t background;
-				audio_ready_t ready;
-				int irq_num;
+		addr_t	addr;
+				// audio_ready_t ready;
+				// int irq_num;
 } dev;
 
 /*
@@ -68,12 +71,17 @@ static void read_audio(audio_t *audio)
 	audio->right1 = ioread32(DATA1_R(dev.virtbase));
 	audio->left2 = ioread32(DATA2_L(dev.virtbase));
 	audio->right2 = ioread32(DATA2_R(dev.virtbase));
-	ioread32(RESET_IRQ(dev.virtbase));
+	// ioread32(RESET_IRQ(dev.virtbase));
 	dev.audio = *audio;
 	//iowrite8(background->red, BG_RED(dev.virtbase) );
 	//dev.background = *background;
 }
 
+static void write_address(addr_t *addr)
+{
+	iowrite32(addr->addr, ADDR(dev.virtbase));
+	dev.addr = *addr;
+}
 /*
  * Handle interrupts raised by our device. Read samples,
  * clear the interrupt, and wake the user level program.
@@ -101,18 +109,22 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 {
 	audio_arg_t vla;
 	audio_ready_t ready;
+	addr_arg_t vla_addr;
 	switch (cmd) {
-	/*case VGA_BALL_WRITE_BACKGROUND:
-		if (copy_from_user(&vla, (vga_ball_arg_t *) arg,
-				   sizeof(vga_ball_arg_t)))
+	case ADD_WRITE:
+		if (copy_from_user(&vla_addr, (addr_arg_t *) arg, sizeof(addr_arg_t)))	// Copy from user space
 			return -EACCES;
-		write_background(&vla.background);
-		break;*/
+		write_address(&vla_addr.addr);
+		break;
 	case AUDIO_READ:
+		vla.audio = dev.audio;
+		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))
+			return -EACCES;
+		break;
+	case AUDIO_IRQ_READ:
 			// Sleep the process until woken by the interrupt handler, and the data is ready
 			wait_event_interruptible_exclusive(wq, dev.ready.audio_ready);
 			// Data is ready
-			// read_audio(&vla.audio);
 			vla.audio = dev.audio;
 			ready.audio_ready = 0;
 			dev.ready = ready;
