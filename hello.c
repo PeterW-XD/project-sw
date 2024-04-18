@@ -49,8 +49,8 @@ void read_audio() {
 void write_addr(addr_t *address) {
   addr_arg_t vla;
   vla.addr = *address;
-  if (ioctl(audio_fd, ADD_WRITE, &vla)) {
-      perror("ioctl(ADD_WRITE) failed");
+  if (ioctl(audio_fd, ADDR_WRITE, &vla)) {
+      perror("ioctl(ADDR_WRITE) failed");
       return;
   }
 }
@@ -73,7 +73,7 @@ int main()
   }
   usleep(500000);
 	while (buf_index < BUF_SIZE) {
-    write_addr(address);
+    write_addr(&address);
     usleep(1);
     read_audio();
 	}

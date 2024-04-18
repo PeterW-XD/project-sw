@@ -112,7 +112,7 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 	audio_ready_t ready;
 	addr_arg_t vla_addr;
 	switch (cmd) {
-	case ADD_WRITE:
+	case ADDR_WRITE:
 		if (copy_from_user(&vla_addr, (addr_arg_t *) arg, sizeof(addr_arg_t)))	// Copy from user space
 			return -EACCES;
 		write_address(&vla_addr.addr);
