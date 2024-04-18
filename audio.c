@@ -62,8 +62,7 @@ struct audio_dev { // audio_dev
 				int irq_num;
 } dev;
 
-/*
- * Read audio data from device
+/* Read audio data from device
  */
 static void read_audio(audio_t *audio)
 {
@@ -77,13 +76,15 @@ static void read_audio(audio_t *audio)
 	//dev.background = *background;
 }
 
+/* Write address to device 
+*/
 static void write_address(addr_t *addr)
 {
 	iowrite32(addr->addr, ADDR(dev.virtbase));
 	dev.addr = *addr;
 }
-/*
- * Handle interrupts raised by our device. Read samples,
+
+/* Handle interrupts raised by our device. Read samples,
  * clear the interrupt, and wake the user level program.
  */
 static irqreturn_t irq_handler(int irq, void *dev_id, struct pt_regs *regs)
@@ -118,7 +119,7 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 		break;
 	case AUDIO_READ:
 		vla.audio = dev.audio;
-		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))
+		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))		// Copy to user space
 			return -EACCES;
 		break;
 	case AUDIO_IRQ_READ:
