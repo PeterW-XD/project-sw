@@ -34,7 +34,6 @@ int buf_index = 0;
 // Read audio data
 void read_audio() {
   audio_arg_t vla;
-  
   if (ioctl(audio_fd, AUDIO_READ, &vla)) {
       perror("ioctl(AUDIO_READ) failed");
       return;
@@ -46,8 +45,20 @@ void read_audio() {
   buf_index++;
 }
 
+// Write address
+void write_addr(addr_t *address) {
+  addr_arg_t vla;
+  vla.addr = *address;
+  if (ioctl(audio_fd, ADDR_WRITE, &vla)) {
+      perror("ioctl(ADDR_WRITE) failed");
+      return;
+  }
+}
+
 int main()
 {
+  addr_t address;
+  address.addr = buf_index;
   static const char filename[] = "/dev/audio";  // Open the driver
   // static const char file1[] = "./test1.wav";    // Microphone 1 .wav directory
   // static const char file2[] = "./test2.wav";
@@ -60,8 +71,11 @@ int main()
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
   }
+  usleep(500000);
 	while (buf_index < BUF_SIZE) {
-		read_audio();
+    write_addr(&address);
+    usleep(1);
+    read_audio();
 	}
 	printf("done\n");
 	for (int i = 0; i < BUF_SIZE; i++) {    // Truncate to short
