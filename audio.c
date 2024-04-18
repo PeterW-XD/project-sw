@@ -58,8 +58,8 @@ struct audio_dev { // audio_dev
 	void __iomem *virtbase; /* Where registers can be accessed in memory */
         audio_t audio; // audio_color_t background;
 		addr_t	addr;
-				// audio_ready_t ready;
-				// int irq_num;
+				audio_ready_t ready;
+				int irq_num;
 } dev;
 
 /*
