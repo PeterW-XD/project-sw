@@ -58,7 +58,6 @@ void write_addr(addr_t *address) {
 int main()
 {
   addr_t address;
-  address.addr = buf_index;
   static const char filename[] = "/dev/audio";  // Open the driver
   // static const char file1[] = "./test1.wav";    // Microphone 1 .wav directory
   // static const char file2[] = "./test2.wav";
@@ -73,6 +72,7 @@ int main()
   }
   usleep(500000);
 	while (buf_index < BUF_SIZE) {
+  	address.addr = buf_index;
     write_addr(&address);
     usleep(1);
     read_audio();
@@ -92,4 +92,4 @@ int main()
   
   printf("Audio record program terminating\n");
   return 0;
-}
+
