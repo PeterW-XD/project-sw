@@ -72,9 +72,9 @@ int main()
   }
   usleep(500000);
 	while (buf_index < BUF_SIZE) {
-  	address.addr = buf_index;
-    write_addr(&address);
-    usleep(1);
+  	// address.addr = buf_index;
+    // write_addr(&address);
+    // usleep(1);
     read_audio();
 	}
 	printf("done\n");

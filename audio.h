@@ -15,7 +15,7 @@ typedef struct {
 
 typedef struct {
 	audio_t audio;
-	// audio_ready_t ready;
+	audio_ready_t ready;
 } audio_arg_t;
 
 // Package 2
