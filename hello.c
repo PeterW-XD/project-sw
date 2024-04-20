@@ -34,7 +34,7 @@ int buf_index = 0;
 // Read audio data
 void read_audio() {
   audio_arg_t vla;
-  if (ioctl(audio_fd, AUDIO_IRQ_READ, &vla)) {
+  if (ioctl(audio_fd, AUDIO_READ, &vla)) {
       perror("ioctl(AUDIO_READ) failed");
       return;
   }
@@ -72,9 +72,9 @@ int main()
   }
   usleep(500000);
 	while (buf_index < BUF_SIZE) {
-  	// address.addr = buf_index;
-    // write_addr(&address);
-    // usleep(1);
+  	 address.addr = buf_index;
+     write_addr(&address);
+     usleep(1);
     read_audio();
 	}
 	printf("done\n");

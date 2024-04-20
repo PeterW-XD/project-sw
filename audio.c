@@ -46,7 +46,7 @@ DECLARE_WAIT_QUEUE_HEAD(wq);
 #define DATA1_R(x) ((x)+4)
 #define DATA2_L(x) ((x)+8)
 #define DATA2_R(x) ((x)+12)
-#define RESET_IRQ(x) ((x)+16)
+// #define RESET_IRQ(x) ((x)+16)
 
 #define ADDR(x) (x)
 
