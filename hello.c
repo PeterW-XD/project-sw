@@ -34,7 +34,7 @@ int buf_index = 0;
 // Read audio data
 void read_audio() {
   audio_arg_t vla;
-  if (ioctl(audio_fd, AUDIO_READ, &vla)) {
+  if (ioctl(audio_fd, AUDIO_IRQ_READ, &vla)) {
       perror("ioctl(AUDIO_READ) failed");
       return;
   }
