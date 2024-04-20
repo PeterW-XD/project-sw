@@ -70,7 +70,7 @@ static void read_audio(audio_t *audio)
 	audio->right1 = ioread32(DATA1_R(dev.virtbase));
 	audio->left2 = ioread32(DATA2_L(dev.virtbase));
 	audio->right2 = ioread32(DATA2_R(dev.virtbase));
- ioread32(RESET_IRQ(dev.virtbase));
+	//ioread32(RESET_IRQ(dev.virtbase));
 	dev.audio = *audio;
 }
 
