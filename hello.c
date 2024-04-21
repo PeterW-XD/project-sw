@@ -21,7 +21,7 @@
 #define word_length 24		// 24 bits per sample
 #define duration_sec 1		// 1s
 // #define BUF_SIZE (SAMPLE_RATE * duration_sec)
-#define BUF_SIZE 4096
+#define BUF_SIZE 2048
 
 // int vga_ball_fd;
 int audio_fd;
