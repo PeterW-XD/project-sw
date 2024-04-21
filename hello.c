@@ -61,10 +61,10 @@ int main()
   static const char filename[] = "/dev/audio";  // Open the driver
   // static const char file1[] = "./test1.wav";    // Microphone 1 .wav directory
   // static const char file2[] = "./test2.wav";
-  FILE *fd1_L = fopen("data1_L.txt", "w");
-  FILE *fd1_R = fopen("data1_R.txt", "w");
-  FILE *fd2_L = fopen("data2_L.txt", "w");
-  FILE *fd2_R = fopen("data2_R.txt", "w");
+  FILE *fd1_L = fopen("data1.txt", "w");
+  FILE *fd1_R = fopen("data2.txt", "w");
+  FILE *fd2_L = fopen("data3.txt", "w");
+  FILE *fd2_R = fopen("data4.txt", "w");
   printf("Audio record program started\n");
   if ( (audio_fd = open(filename, O_RDWR)) == -1) {
     fprintf(stderr, "could not open %s\n", filename);
