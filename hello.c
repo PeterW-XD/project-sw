@@ -78,13 +78,11 @@ int main()
     read_audio();
 	}
 	printf("done\n");
-	for (int i = 0; i < BUF_SIZE; i++) {    // Truncate to short
-    fprintf(fd1_L, "%d\n", left1_buf[i]);
-    fprintf(fd1_R, "%d\n", right1_buf[i]);
-    fprintf(fd2_L, "%d\n", left2_buf[i]);
-    fprintf(fd2_R, "%d\n", right2_buf[i]);
-		// out_right[i] = right1_buf[i] / 256;
-		// out_left[i] = left1_buf[i] / 256;
+	for (int i = 0; i < BUF_SIZE; i++) {    // Received data is 16 bits wide 
+    fprintf(fd1_L, "%d\n", (left1_buf[i] << 16) >> 16);	// Extend the sign
+    fprintf(fd1_R, "%d\n", (right1_buf[i] << 16) >> 16);
+    fprintf(fd2_L, "%d\n", (left2_buf[i] << 16) >> 16);
+    fprintf(fd2_R, "%d\n", (right2_buf[i] << 16) >> 16);
 	}
 
 	// write_wav(file1, SAMPLE_RATE * duration_sec, out_left, SAMPLE_RATE);
