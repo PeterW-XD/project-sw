@@ -21,7 +21,7 @@
 #define word_length 24		// 24 bits per sample
 #define duration_sec 1		// 1s
 // #define BUF_SIZE (SAMPLE_RATE * duration_sec)
-#define BUF_SIZE 4096
+#define BUF_SIZE 2048
 
 // int vga_ball_fd;
 int audio_fd;
@@ -79,10 +79,10 @@ int main()
 	}
 	printf("done\n");
 	for (int i = 0; i < BUF_SIZE; i++) {    // Truncate to short
-    fprintf(fd1_L, "%d\n", (left1_buf[i] << 8) >> 8);
-    fprintf(fd1_R, "%d\n", (right1_buf[i] << 8) >> 8);
-    fprintf(fd2_L, "%d\n", (left2_buf[i] << 8) >> 8);
-    fprintf(fd2_R, "%d\n", (right2_buf[i] << 8) >> 8);
+    fprintf(fd1_L, "%d\n", left1_buf[i];
+    fprintf(fd1_R, "%d\n", right1_buf[i];
+    fprintf(fd2_L, "%d\n", left2_buf[i];
+    fprintf(fd2_R, "%d\n", right2_buf[i];
 		// out_right[i] = right1_buf[i] / 256;
 		// out_left[i] = left1_buf[i] / 256;
 	}
