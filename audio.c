@@ -48,7 +48,8 @@ DECLARE_WAIT_QUEUE_HEAD(wq);
 #define DATA2_R(x) ((x)+6)
 // #define RESET_IRQ(x) ((x)+8)
 
-#define ADDR(x) (x)
+#define RDREQ(x) (x)
+#define RESET(x) (x+2)
 
 /*
  * Information about our device
@@ -78,7 +79,8 @@ static void read_audio(audio_t *audio)
 */
 static void write_address(addr_t *addr)
 {
-	iowrite16(addr->addr, ADDR(dev.virtbase));
+	iowrite16(addr->req1, RDREQ(dev.virtbase));
+	iowrite16(addr->req0, RESET(dev.virtbase));
 	dev.addr = *addr;
 }
 
@@ -87,10 +89,8 @@ static void write_address(addr_t *addr)
  */
 static irqreturn_t irq_handler(int irq, void *dev_id, struct pt_regs *regs)
 {
-	audio_t audio;
 	audio_ready_t ready;
-	read_audio(&audio);
-
+	
 	ready.audio_ready = 1;
 	dev.ready = ready;
 	wake_up_interruptible(&wq);
@@ -112,16 +112,22 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 	audio_t audio;
 	switch (cmd) {
 	case ADDR_WRITE:
+		wait_event_interruptible_exclusive(wq, dev.ready.audio_ready);
+		ready.audio_ready = 0;
+		dev.ready = ready;
 		if (copy_from_user(&vla_addr, (addr_arg_t *) arg, sizeof(addr_arg_t)))	// Copy from user space
 			return -EACCES;
 		write_address(&vla_addr.addr);
 		break;
+
 	case AUDIO_READ:
 		read_audio(&audio);
 		vla.audio = dev.audio;
 		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))		// Copy to user space
 			return -EACCES;
 		break;
+
+/*
 	case AUDIO_IRQ_READ:
 			// Sleep the process until woken by the interrupt handler, and the data is ready
 			wait_event_interruptible_exclusive(wq, dev.ready.audio_ready);
@@ -132,7 +138,7 @@ static long audio_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
 		if (copy_to_user((audio_arg_t *) arg, &vla, sizeof(audio_arg_t)))
 			return -EACCES;
 		break;
-
+*/
 	default:
 		return -EINVAL;
 	}
