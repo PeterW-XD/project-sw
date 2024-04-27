@@ -57,11 +57,10 @@ void write_addr(addr_t *address) {
 
 int main()
 {
-  // addr_t address;
+  addr_t address;
   static const char filename[] = "/dev/audio";  // Open the driver
   // static const char file1[] = "./test1.wav";    // Microphone 1 .wav directory
   // static const char file2[] = "./test2.wav";
-  addr_t req = {1, 0}; 
 	FILE *fd1_L = fopen("data1.txt", "w");
   FILE *fd1_R = fopen("data2.txt", "w");
   FILE *fd2_L = fopen("data3.txt", "w");
@@ -71,9 +70,9 @@ int main()
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
   }
-  // usleep(100000);
 	while (buf_index < BUF_SIZE) {
-    write_addr(&req);
+   	address.addr = buf_index;
+    write_addr(&address);
     read_audio();
 	}
 	printf("done\n");
