@@ -61,7 +61,7 @@ int main()
   static const char filename[] = "/dev/audio";  // Open the driver
   // static const char file1[] = "./test1.wav";    // Microphone 1 .wav directory
   // static const char file2[] = "./test2.wav";
-  static const addr_t req = {{1, 0}}; 
+  static const addr_t req = {1, 0}; 
 	FILE *fd1_L = fopen("data1.txt", "w");
   FILE *fd1_R = fopen("data2.txt", "w");
   FILE *fd2_L = fopen("data3.txt", "w");
