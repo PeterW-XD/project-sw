@@ -7,7 +7,7 @@ Fs = 48000;  % sampling rate of the microphones
 
 % Signal Parameters
 f = 2000;  % frequency of signal of interest
-snr = 20;  % signal power to noise power ratio in dBW
+snr = -15;  % signal power to noise power ratio in dBW
 
 % Trial Parameters
 n = 1024;  % samples in data block

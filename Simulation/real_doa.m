@@ -10,10 +10,10 @@ Fs = 48000;  % sampling rate of the microphones
 snum = 256; % number of sectors to split half-circle into
 
 % Signal Properties
-datapath = "RecordedData\Apr14_90\";
+datapath = "RecordedData\Apr14_0\";
 f = 2000;  % frequency of signal of interest
-samplestart = 1024;
-samplecount = 2048;
+samplestart = 1;
+samplecount = 4096;
 dstrings = ["L", "R", "L", "R"];
 
 clear arrsig;

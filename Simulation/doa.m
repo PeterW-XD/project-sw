@@ -2,18 +2,18 @@
 close all
 
 % Array Parameters
-m = 8; % number of microphones
+m = 4; % number of microphones
 d = 0.104;  % distance between microphones (in meters)
 Fs = 48000;  % sampling rate of the microphones
 
 % Signal Parameters
 f = 2000;  % frequency of signal of interest
-aoa = 45;  % intended angle of arrival (in degrees)
-snr = -20;  % signal power to noise power ratio in dBW
+aoa = 60;  % intended angle of arrival (in degrees)
+snr = -15;  % signal power to noise power ratio in dBW
 
 % Trial Parameters
 n = 1024;  % samples in data block
-snum = 256; % number of sectors to split half-circle into
+snum = 12; % number of sectors to split half-circle into
 
 bnum = snum+1;  % number of beams to form
 arrsig = generate_array_signals(m, d, aoa, f, n, Fs, snr);
