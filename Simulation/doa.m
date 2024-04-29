@@ -36,9 +36,9 @@ spatial_spectrum = zeros(m, L);
 % figure(2);
 for i=1:m
     spatial_spectrum(i, :) = fft(arrsig(i, :), L);
-%     subplot(4, 2, i)
+    subplot(4, 2, i)
 %     plot(Fs/L*(-L/2:L/2-1), angle(spatial_spectrum(i, :)))
-%     plot(Fs/L*(-L/2:L/2-1), abs(fftshift(spatial_spectrum(i, :))))
+    plot(Fs/L*(-L/2:L/2-1), abs(fftshift(spatial_spectrum(i, :))))
 end
 
 % Extract bin with FFT peak
@@ -55,6 +55,9 @@ for n = 1:m  % Iterate over sensors
     eshifts = exp(-1i*shvec);
     dmat(n, :) = eshifts./abs(eshifts);
 end
+
+% Scale delay matrix to fit in 14-bit integer.
+% dmat = dmat .* 10^3;
 
 % Apply delays and calculate power
 sigvec = spatial_spectrum(:, tbin);

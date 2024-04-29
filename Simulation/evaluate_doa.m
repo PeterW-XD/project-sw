@@ -34,7 +34,7 @@ function [doa_res, pmax, tbin, pwrvec] = evaluate_doa(input_signal, m, d, f, snu
         dmat(n, :) = eshifts./abs(eshifts);
     end
 
-%     dmat = dmat .* 10^3;
+    dmat = dmat .* 10^3;
 
     % Apply delays and calculate power
     sigvec = spatial_spectrum(:, tbin);
