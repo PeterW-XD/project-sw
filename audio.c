@@ -43,13 +43,13 @@ DECLARE_WAIT_QUEUE_HEAD(wq);
 
 /* Device registers */
 #define DATA1_L(x) (x)
-#define DATA1_R(x) ((x)+2)
-#define DATA2_L(x) ((x)+4)
-#define DATA2_R(x) ((x)+6)
+#define DATA1_R(x) ((x)+4)
+#define DATA2_L(x) ((x)+8)
+#define DATA2_R(x) ((x)+12)
 // #define RESET_IRQ(x) ((x)+8)
 
 #define ADDR(x) (x)
-#define GO(x) ((x)+2)
+#define GO(x) ((x)+4)
 
 /*
  * Information about our device
@@ -67,10 +67,10 @@ struct audio_dev { // audio_dev
  */
 static void read_audio(audio_t *audio)
 {
-	audio->left1 = ioread16(DATA1_L(dev.virtbase));
-	audio->right1 = ioread16(DATA1_R(dev.virtbase));
-	audio->left2 = ioread16(DATA2_L(dev.virtbase));
-	audio->right2 = ioread16(DATA2_R(dev.virtbase));
+	audio->left1 = ioread32(DATA1_L(dev.virtbase));
+	audio->right1 = ioread32(DATA1_R(dev.virtbase));
+	audio->left2 = ioread32(DATA2_L(dev.virtbase));
+	audio->right2 = ioread32(DATA2_R(dev.virtbase));
 	//ioread32(RESET_IRQ(dev.virtbase));
 	dev.audio = *audio;
 }
@@ -79,8 +79,8 @@ static void read_audio(audio_t *audio)
 */
 static void write_address(addr_t *addr)
 {
-	iowrite16(addr->addr, ADDR(dev.virtbase));
-	iowrite16(addr->go, GO(dev.virtbase));
+	iowrite32(addr->addr, ADDR(dev.virtbase));
+	iowrite32(addr->go, GO(dev.virtbase));
 	dev.addr = *addr;
 }
 
