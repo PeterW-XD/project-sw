@@ -21,7 +21,7 @@
 #define word_length 24		// 24 bits per sample
 #define duration_sec 1		// 1s
 // #define BUF_SIZE (SAMPLE_RATE * duration_sec)
-#define BUF_SIZE 2048
+#define BUF_SIZE 1024
 
 // int vga_ball_fd;
 int audio_fd;
@@ -70,8 +70,13 @@ int main()
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
   }
+  address.addr = 0;
+  address.go = 1;
+  write_addr(&address);
+  usleep(100000);
 	while (buf_index < BUF_SIZE) {
    	address.addr = buf_index;
+    address.go = 0;
     write_addr(&address);
     read_audio();
 	}
