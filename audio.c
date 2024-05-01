@@ -48,7 +48,8 @@ DECLARE_WAIT_QUEUE_HEAD(wq);
 #define DATA2_R(x) ((x)+6)
 // #define RESET_IRQ(x) ((x)+8)
 
-#define RDREQ(x) (x)
+#define ADDR(x) (x)
+#define GO(x) ((x)+2)
 
 /*
  * Information about our device
@@ -78,7 +79,8 @@ static void read_audio(audio_t *audio)
 */
 static void write_address(addr_t *addr)
 {
-	iowrite16(addr->addr, RDREQ(dev.virtbase));
+	iowrite16(addr->addr, ADDR(dev.virtbase));
+	iowrite16(addr->go, GO(dev.virtbase));
 	dev.addr = *addr;
 }
 

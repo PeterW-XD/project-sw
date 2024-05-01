@@ -21,6 +21,7 @@ typedef struct {
 // Package 2
 typedef struct {
 	int addr;
+	int go;
 } addr_t;
 
 typedef struct
