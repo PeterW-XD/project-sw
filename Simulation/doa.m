@@ -8,12 +8,12 @@ Fs = 48000;  % sampling rate of the microphones
 
 % Signal Parameters
 f = 2000;  % frequency of signal of interest
-aoa = 60;  % intended angle of arrival (in degrees)
-snr = -15;  % signal power to noise power ratio in dBW
+aoa = 75;  % intended angle of arrival (in degrees)
+snr = 5;  % signal power to noise power ratio in dBW
 
 % Trial Parameters
 n = 1024;  % samples in data block
-snum = 12; % number of sectors to split half-circle into
+snum = 36; % number of sectors to split half-circle into
 
 bnum = snum+1;  % number of beams to form
 arrsig = generate_array_signals(m, d, aoa, f, n, Fs, snr);
@@ -57,7 +57,7 @@ for n = 1:m  % Iterate over sensors
 end
 
 % Scale delay matrix to fit in 14-bit integer.
-% dmat = dmat .* 10^3;
+dmat = dmat * 10^3;
 
 % Apply delays and calculate power
 sigvec = spatial_spectrum(:, tbin);

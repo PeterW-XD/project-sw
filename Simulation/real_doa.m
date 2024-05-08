@@ -7,7 +7,7 @@ d = 0.104;  % distance between microphones (in meters)
 Fs = 48000;  % sampling rate of the microphones
 
 % Algorithm Parameters
-snum = 256; % number of sectors to split half-circle into
+snum = 18; % number of sectors to split half-circle into
 
 % Signal Properties
 datapath = "RecordedData\Apr14_0\";

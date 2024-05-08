@@ -1,17 +1,17 @@
 close all
 
 % Array Parameters
-m = 8; % number of microphones
+m = 4; % number of microphones
 d = 0.104;  % distance between microphones (in meters)
 Fs = 48000;  % sampling rate of the microphones
 
 % Signal Parameters
 f = 2000;  % frequency of signal of interest
-snr = -15;  % signal power to noise power ratio in dBW
+snr = 15;  % signal power to noise power ratio in dBW
 
 % Trial Parameters
 n = 1024;  % samples in data block
-snum = 12; % number of sectors to split half-circle into
+snum = 36; % number of sectors to split half-circle into
 angstep = 1;
 
 bnum = snum+1;  % number of beams to form
