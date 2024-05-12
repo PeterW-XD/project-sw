@@ -5,8 +5,10 @@
 
 // Package 1
 typedef struct {
-	 int left1, right1;
-	 int left2, right2;
+	 int left1;
+	 int right1;
+	 int left2;
+	 int right2;
 } audio_t;
 
 typedef struct {
