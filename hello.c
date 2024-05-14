@@ -82,7 +82,7 @@ int main()
   write_addr(&address);
   address.go = 0;
   write_addr(&address);
-	usleep(10000);
+	usleep(100000);
 	while (buf_index < BUF_SIZE) {
    	address.addr = buf_index;
     address.go = 0;
