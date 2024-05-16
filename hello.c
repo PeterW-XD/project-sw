@@ -83,19 +83,17 @@ int main()
   address.go = 0;
   write_addr(&address);
 	usleep(1000000);
+  address.go = 2;
+  write_addr(&address);
 	while (buf_index < BUF_SIZE) {
    	address.addr = buf_index;
-    address.go = 0;
     write_addr(&address);
     read_audio();
 	}
 	printf("done\n");
 	for (int i = 0; i < BUF_SIZE; i++) {    // Received data is 16 bits wide 
-		fprintf(fd1, "%d\n", data1[i]);	// Extend the sign
-    fprintf(fd2, "%d\n", data2[i]);	// Extend the sign
-		
-    //fprintf(fd1, "%d\n", ((data1[i] / 16384) << 18) >> 18);	// Extend the sign	
-		//fprintf(fd2, "%d\n", ((data1[i] % 16384) << 18) >> 18);	// Extend the sign
+    fprintf(fd1, "%d\n", ((data1[i] / 16384) << 18) >> 18);	// Extend the sign	
+		fprintf(fd2, "%d\n", ((data1[i] % 16384) << 18) >> 18);	// Extend the sign
 		fprintf(fd3, "%d\n", ((data2[i] / 16384) << 18) >> 18);	// Extend the sign
 		fprintf(fd4, "%d\n", ((data2[i] % 16384) << 18) >> 18);	// Extend the sign
 		fprintf(fd5, "%d\n", ((data3[i] / 16384) << 18) >> 18);	// Extend the sign
