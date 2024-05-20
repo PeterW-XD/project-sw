@@ -82,6 +82,11 @@ int main()
   write_addr(&address);
   address.go = 0;
   write_addr(&address);
+  while (1)
+  {
+    /* code */
+  }
+  
 	usleep(1000000);
   address.go = 2;
   write_addr(&address);
