@@ -46,8 +46,8 @@ void calcDeg(int x, int y, int *dir) {
 // Read audio data
 void read_audio() {
   audio_arg_t vla;
-  if (ioctl(audio_fd, AUDIO_IRQ_READ, &vla)) {
-      perror("ioctl(AUDIO_IRQ_READ) failed");
+  if (ioctl(audio_fd, AUDIO_READ, &vla)) {
+      perror("ioctl(AUDID_READ) failed");
       return;
   }
   data1 = vla.audio.left1;
@@ -83,14 +83,15 @@ int main()
   radius = 200;
   center = 240;
   // Start the program  
-  address.go = 1;
-  address.xcoor = 0;
-  address.ycoor = 0;
-  write_addr(&address);
-  address.go = 0;
-  write_addr(&address);
 
 	while (1) {
+    address.xcoor = 0;
+    address.ycoor = 0;
+    address.go = 1;
+    write_addr(&address);
+    address.go = 0;
+    write_addr(&address);
+    usleep(500000);
     read_audio();
     calcDeg(data1, data2, &dir);
     degrees = dir;
@@ -99,6 +100,7 @@ int main()
     address.ycoor = center + (int)dou_y;
     write_addr(&address);
 	}
+  
 	printf("done\n");
 
 	// write_wav(file1, SAMPLE_RATE * duration_sec, out_left, SAMPLE_RATE);

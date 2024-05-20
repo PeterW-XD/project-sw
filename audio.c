@@ -44,7 +44,7 @@ DECLARE_WAIT_QUEUE_HEAD(wq);
 /* Device registers */
 #define DATA1_L(x) (x)
 #define DATA1_R(x) ((x)+4)
-#define RESET_IRQ(x) ((x)+8)
+// #define RESET_IRQ(x) ((x)+8)
 
 #define GO(x) (x)
 #define XCOOR(x) ((x)+4)
@@ -68,7 +68,7 @@ static void read_audio(audio_t *audio)
 {
 	audio->left1 = ioread32(DATA1_L(dev.virtbase));
 	audio->right1 = ioread32(DATA1_R(dev.virtbase));
-	ioread32(RESET_IRQ(dev.virtbase));
+	// ioread32(RESET_IRQ(dev.virtbase));
 	dev.audio = *audio;
 }
 
