@@ -26,6 +26,8 @@
 int audio_fd;
 int data1[BUF_SIZE], data2[BUF_SIZE];
 int data3[BUF_SIZE], data4[BUF_SIZE];
+int data5[BUF_SIZE], data6[BUF_SIZE];
+int data7[BUF_SIZE], data8[BUF_SIZE];
 // short int out_left[BUF_SIZE];
 // short int out_right[BUF_SIZE];
 int buf_index = 0;
@@ -41,6 +43,10 @@ void read_audio() {
   data2[buf_index] = vla.audio.right1;
   data3[buf_index] = vla.audio.left2;
   data4[buf_index] = vla.audio.right2;
+  data5[buf_index] = vla.audio.left3;
+  data6[buf_index] = vla.audio.right3;
+  data7[buf_index] = vla.audio.left4;
+  data8[buf_index] = vla.audio.right4;
   buf_index++;
 }
 
@@ -72,6 +78,14 @@ int main()
   FILE *fd6 = fopen("mic3_imag.txt", "w");
   FILE *fd7 = fopen("mic4_real.txt", "w");
   FILE *fd8 = fopen("mic4_imag.txt", "w");
+  FILE *fd9 = fopen("mic5_imag.txt", "w");
+  FILE *fd10 = fopen("mic5_imag.txt", "w");
+  FILE *fd11 = fopen("mic6_imag.txt", "w");
+  FILE *fd12 = fopen("mic6_imag.txt", "w");
+  FILE *fd13 = fopen("mic7_imag.txt", "w");
+  FILE *fd14 = fopen("mic7_imag.txt", "w");
+  FILE *fd15 = fopen("mic8_imag.txt", "w");
+  FILE *fd16 = fopen("mic8_imag.txt", "w");
   printf("Audio record program started\n");
   if ( (audio_fd = open(filename, O_RDWR)) == -1) {
     fprintf(stderr, "could not open %s\n", filename);
@@ -100,6 +114,14 @@ int main()
 		fprintf(fd6, "%d\n", ((data3[i] % 16384) << 18) >> 18);	// Extend the sign
 		fprintf(fd7, "%d\n", ((data4[i] / 16384) << 18) >> 18);	// Extend the sign
 		fprintf(fd8, "%d\n", ((data4[i] % 16384) << 18) >> 18);	// Extend the sign
+		fprintf(fd9, "%d\n", ((data5[i] % 16384) << 18) >> 18);	// Extend the sign
+		fprintf(fd10, "%d\n", ((data5[i] % 16384) << 18) >> 18);	// Extend the sign
+		fprintf(fd11, "%d\n", ((data6[i] % 16384) << 18) >> 18);	// Extend the sign
+		fprintf(fd12, "%d\n", ((data6[i] % 16384) << 18) >> 18);	// Extend the sign
+		fprintf(fd13, "%d\n", ((data7[i] % 16384) << 18) >> 18);	// Extend the sign
+		fprintf(fd14, "%d\n", ((data7[i] % 16384) << 18) >> 18);	// Extend the sign
+		fprintf(fd15, "%d\n", ((data8[i] % 16384) << 18) >> 18);	// Extend the sign
+		fprintf(fd16, "%d\n", ((data8[i] % 16384) << 18) >> 18);	// Extend the sign
 		// fprintf(fd1_L, "%d\n", (left1_buf[i] << 16) >> 16);	// Extend the sign
     // fprintf(fd1_R, "%d\n", (right1_buf[i] << 16) >> 16);
     // fprintf(fd2_L, "%d\n", (left2_buf[i] << 16) >> 16);

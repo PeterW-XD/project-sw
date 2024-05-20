@@ -46,6 +46,10 @@ DECLARE_WAIT_QUEUE_HEAD(wq);
 #define DATA1_R(x) ((x)+4)
 #define DATA2_L(x) ((x)+8)
 #define DATA2_R(x) ((x)+12)
+#define DATA2_R(x) ((x)+16)
+#define DATA2_R(x) ((x)+20)
+#define DATA2_R(x) ((x)+24)
+#define DATA2_R(x) ((x)+28)
 // #define RESET_IRQ(x) ((x)+8)
 
 #define ADDR(x) (x)
@@ -71,6 +75,10 @@ static void read_audio(audio_t *audio)
 	audio->right1 = ioread32(DATA1_R(dev.virtbase));
 	audio->left2 = ioread32(DATA2_L(dev.virtbase));
 	audio->right2 = ioread32(DATA2_R(dev.virtbase));
+	audio->left3 = ioread32(DATA2_R(dev.virtbase));
+	audio->right3 = ioread32(DATA2_R(dev.virtbase));
+	audio->left4 = ioread32(DATA2_R(dev.virtbase));
+	audio->right4 = ioread32(DATA2_R(dev.virtbase));
 	//ioread32(RESET_IRQ(dev.virtbase));
 	dev.audio = *audio;
 }
