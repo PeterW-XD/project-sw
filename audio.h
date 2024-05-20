@@ -9,10 +9,6 @@ typedef struct {
 	 int right1;
 	 int left2;
 	 int right2;
-	 int left3;
-	 int right3;
-	 int left4;
-	 int right4;
 } audio_t;
 
 typedef struct {
