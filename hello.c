@@ -78,13 +78,13 @@ int main()
     return -1;
   }
   address.addr = 0;
-  address.go = 1;
-  write_addr(&address);
-  address.go = 0;
-  write_addr(&address);
   while (1)
   {
-    /* code */
+    address.go = 1;
+    write_addr(&address);
+    address.go = 0;
+    write_addr(&address);
+    usleep(500000);
   }
   
 	usleep(1000000);
