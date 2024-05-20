@@ -15,13 +15,14 @@ typedef struct {
 
 typedef struct {
 	audio_t audio;
-	// audio_ready_t ready;
+	audio_ready_t ready;
 } audio_arg_t;
 
 // Package 2
 typedef struct {
-	int addr;
 	int go;
+	int xcoor;
+	int ycoor;
 } addr_t;
 
 typedef struct

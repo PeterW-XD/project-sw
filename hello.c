@@ -15,15 +15,33 @@
 #include <string.h>
 #include <unistd.h>
 #include "write_wav.h"
+#include <math.h>
 
-// #define SAMPLE_RATE 48000	// 48000kHz
-// #define word_length 24		// 24 bits per sample
-// #define duration_sec 1		// 1s
-// #define BUF_SIZE (SAMPLE_RATE * duration_sec)
-#define BUF_SIZE 1024
+#define PI 3.14159265358979
 
 int audio_fd;
 int data1, data2;
+
+void calcCoor(double radius, double degrees, double *x, double *y) {
+    double radians = degrees * (PI / 180.0);
+    *x = radius * cos(radians);
+    *y = radius * sin(radians);
+}
+
+// Calculate the degree
+void calcDeg(int x, int y, int *dir) {
+  if (x >= -45 && x <= 45) {
+    if (y >= 45 && y <= 90)
+      *dir = 90 - x;
+    else if (y >= -90 && y <= -45)
+      *dir =  270 + x;
+  } else {
+    if (x > 45 && x < 90)
+      *dir = 360 + y;
+    else if (x > -90 && x < -45)
+      *dir =  180 - y;
+  }
+}
 
 // Read audio data
 void read_audio() {
@@ -48,6 +66,9 @@ void write_addr(addr_t *address) {
 
 int main()
 {
+  double radius, degrees, dou_x, dou_y;
+  int dir;
+  int center;
   addr_t address;
   static const char filename[] = "/dev/audio";  // Open the driver
   // static const char file1[] = "./test1.wav"; // Microphone 1 .wav directory
@@ -58,35 +79,27 @@ int main()
     fprintf(stderr, "could not open %s\n", filename);
     return -1;
   }
-  
-  address.addr = 0;
+  // Init
+  radius = 200;
+  center = 240;
+  // Start the program  
   address.go = 1;
+  address.xcoor = 0;
+  address.ycoor = 0;
   write_addr(&address);
   address.go = 0;
   write_addr(&address);
-	usleep(1000000);
-  address.go = 2;
-  write_addr(&address);
-	while (buf_index < BUF_SIZE) {
-   	address.addr = buf_index;
-    write_addr(&address);
+
+	while (1) {
     read_audio();
+    calcDeg(data1, data2, &dir);
+    degrees = dir;
+    calcCoor(radius, degrees, &dou_x, &dou_y);
+    address.xcoor = center + (int)dou_x;
+    address.ycoor = center + (int)dou_y;
+    write_addr(&address);
 	}
 	printf("done\n");
-	for (int i = 0; i < BUF_SIZE; i++) {    // Received data is 16 bits wide 
-    fprintf(fd1, "%d\n", ((data1[i] / 16384) << 18) >> 18);	// Extend the sign	
-		fprintf(fd2, "%d\n", ((data1[i] % 16384) << 18) >> 18);	// Extend the sign
-		fprintf(fd3, "%d\n", ((data2[i] / 16384) << 18) >> 18);	// Extend the sign
-		fprintf(fd4, "%d\n", ((data2[i] % 16384) << 18) >> 18);	// Extend the sign
-		fprintf(fd5, "%d\n", ((data3[i] / 16384) << 18) >> 18);	// Extend the sign
-		fprintf(fd6, "%d\n", ((data3[i] % 16384) << 18) >> 18);	// Extend the sign
-		fprintf(fd7, "%d\n", ((data4[i] / 16384) << 18) >> 18);	// Extend the sign
-		fprintf(fd8, "%d\n", ((data4[i] % 16384) << 18) >> 18);	// Extend the sign
-		// fprintf(fd1_L, "%d\n", (left1_buf[i] << 16) >> 16);	// Extend the sign
-    // fprintf(fd1_R, "%d\n", (right1_buf[i] << 16) >> 16);
-    // fprintf(fd2_L, "%d\n", (left2_buf[i] << 16) >> 16);
-    // fprintf(fd2_R, "%d\n", (right2_buf[i] << 16) >> 16);
-	}
 
 	// write_wav(file1, SAMPLE_RATE * duration_sec, out_left, SAMPLE_RATE);
 	// write_wav(file2, SAMPLE_RATE * duration_sec, out_right, SAMPLE_RATE);
