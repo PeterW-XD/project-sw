@@ -42,13 +42,13 @@
 DECLARE_WAIT_QUEUE_HEAD(wq);
 
 /* Device registers */
-#define DATA1_L(x) (x)
-#define DATA1_R(x) ((x)+4)
-#define RESET_IRQ(x) ((x)+8)
+#define DATA1_L(x) ((uint32_t *)(x))
+#define DATA1_R(x) ((uint32_t *)(x)+4)
+#define RESET_IRQ(x) ((uint32_t *)(x)+8)
 
-#define GO(x) (x)
-#define XCOOR(x) ((x)+4)
-#define YCOOR(x) ((x)+8)
+#define GO(x) ((uint32_t *)(x))
+#define XCOOR(x) ((uint32_t *)(x)+4)
+#define YCOOR(x) ((uint32_t *)(x)+8)
 
 /*
  * Information about our device
