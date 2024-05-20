@@ -94,6 +94,7 @@ int main()
     usleep(500000);
     read_audio();
     calcDeg(data1, data2, &dir);
+    printf("x=%d, y=%d\ndir=%d\n", data1, data2, dir);
     degrees = dir;
     calcCoor(radius, degrees, &dou_x, &dou_y);
     address.xcoor = center + (int)dou_x;
