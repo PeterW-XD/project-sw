@@ -80,7 +80,7 @@ int main()
     return -1;
   }
   // Init
-  radius = 200;
+  radius = 100;
   x_center = 630;
   y_center = 240;
   // Start the program  
