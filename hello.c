@@ -86,8 +86,8 @@ int main()
   // Start the program  
 
 	while (1) {
-    address.xcoor = 0;
-    address.ycoor = 0;
+    address.xcoor = 100;
+    address.ycoor = 100;
     address.go = 1;
     write_addr(&address);
     address.go = 0;

@@ -34,8 +34,8 @@ typedef struct
 #define AUDIO_MAGIC 'q'
 
 /* ioctls and their arguments */
-#define AUDIO_READ  _IOR(AUDIO_MAGIC, 1, audio_arg_t *)
-#define ADDR_WRITE	_IOW(AUDIO_MAGIC, 2, addr_arg_t*)
-#define AUDIO_IRQ_READ _IOR(AUDIO_MAGIC, 3, audio_arg_t *)
+#define AUDIO_READ  _IOR(AUDIO_MAGIC, 1, audio_arg_t)
+#define ADDR_WRITE	_IOW(AUDIO_MAGIC, 2, addr_arg_t)
+#define AUDIO_IRQ_READ _IOR(AUDIO_MAGIC, 3, audio_arg_t)
 
 #endif
