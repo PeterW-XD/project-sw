@@ -95,14 +95,14 @@ int main()
     usleep(500000);
     read_audio();
     calcDeg(data1, data2, &dir);
-    // printf("x=%d, y=%d\ndir=%d\n", data1, data2, dir);
+    printf("x=%d, y=%d\ndir=%d\n", data1, data2, dir);
     degrees = dir;
     calcCoor(radius, degrees, &dou_x, &dou_y);
     //printf("x_coor=%f, y_coor=%f\n", dou_x, dou_y);
     address.xcoor = x_center + (int)dou_x;
     address.ycoor = y_center + (int)dou_y;
     printf("x_pix=%d, y_pix=%d\n", address.xcoor, address.ycoor);
-		usleep(1);
+		usleep(100);
     write_addr(&address);
 	}
   
