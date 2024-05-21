@@ -102,6 +102,7 @@ int main()
     address.xcoor = x_center + (int)dou_x;
     address.ycoor = y_center + (int)dou_y;
     printf("x_pix=%d, y_pix=%d\n", address.xcoor, address.ycoor);
+		usleep(1);
     write_addr(&address);
 	}
   
