@@ -68,7 +68,8 @@ int main()
 {
   double radius, degrees, dou_x, dou_y;
   int dir;
-  int x_center, y_center;
+  double x_center;
+	int y_center;
   addr_t address;
   static const char filename[] = "/dev/audio";  // Open the driver
   // static const char file1[] = "./test1.wav"; // Microphone 1 .wav directory
@@ -99,7 +100,7 @@ int main()
     degrees = dir;
     calcCoor(radius, degrees, &dou_x, &dou_y);
     //printf("x_coor=%f, y_coor=%f\n", dou_x, dou_y);
-    address.xcoor = x_center + (int)dou_x;
+    address.xcoor = int((x_center + dou_x)*2.625);
     address.ycoor = y_center - (int)dou_y;
     printf("x_pix=%d, y_pix=%d\n", address.xcoor, address.ycoor);
     write_addr(&address);
