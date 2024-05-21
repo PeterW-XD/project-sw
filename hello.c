@@ -83,11 +83,11 @@ int main()
   radius = 100;
   x_center = 630;
   y_center = 240;
+  address.xcoor = 100;
+  address.ycoor = 100;
   // Start the program  
 
 	while (1) {
-    address.xcoor = 100;
-    address.ycoor = 100;
     address.go = 1;
     write_addr(&address);
     address.go = 0;
@@ -102,7 +102,6 @@ int main()
     address.xcoor = x_center + (int)dou_x;
     address.ycoor = y_center + (int)dou_y;
     printf("x_pix=%d, y_pix=%d\n", address.xcoor, address.ycoor);
-		usleep(100);
     write_addr(&address);
 	}
   
