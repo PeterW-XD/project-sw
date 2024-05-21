@@ -29,18 +29,20 @@ void calcCoor(double radius, double degrees, double *x, double *y) {
 }
 
 // Calculate the degree
-void calcDeg(int x, int y, int *dir) {
+int calcDeg(int x, int y) {
+	int dir;
   if (x >= -45 && x <= 45) {
     if (y >= 45 && y <= 90)
-      *dir = 90 - x;
+      dir = 90 - x;
     else if (y >= -90 && y <= -45)
-      *dir =  270 + x;
+      dir =  270 + x;
   } else {
     if (x > 45 && x < 90)
-      *dir = 360 + y;
+      dir = 360 + y;
     else if (x > -90 && x < -45)
-      *dir =  180 - y;
+      dir =  180 - y;
   }
+	return dir;
 }
 
 // Read audio data
@@ -95,13 +97,13 @@ int main()
     write_addr(&address);
     usleep(500000);
     read_audio();
-    calcDeg(data1, data2, &dir);
+    dir = calcDeg(data1, data2);
     printf("dir=%d\n", dir);
     degrees = dir;
     calcCoor(radius, degrees, &dou_x, &dou_y);
     //printf("x_coor=%f, y_coor=%f\n", dou_x, dou_y);
     address.xcoor = x_center + (int)dou_x;
-    address.ycoor = (int)(y_center - dou_y) * 2.625);
+    address.ycoor = (int)((y_center - dou_y) * 2.625);
     printf("x_pix=%d, y_pix=%d\n", address.xcoor, address.ycoor);
     write_addr(&address);
 	}
