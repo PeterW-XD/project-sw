@@ -36,11 +36,15 @@ int calcDeg(int x, int y) {
       dir = 90 - x;
     else if (y >= -90 && y <= -45)
       dir =  270 + x;
+		else 
+			dir = 0;
   } else {
     if (x > 45 && x < 90)
       dir = 360 + y;
     else if (x > -90 && x < -45)
       dir =  180 - y;
+		else 
+			dir = 0;
   }
 	return dir;
 }
