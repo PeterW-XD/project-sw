@@ -92,23 +92,23 @@ int main()
   y_center = 240;
   address.xcoor = 100;
   address.ycoor = 100;
-  // Start the program  
 
+  // Start the program
 	while (1) {
     address.go = 1;
     write_addr(&address);
     address.go = 0;
     write_addr(&address);
     usleep(500000);
-    read_audio();
-    dir = calcDeg(data1, data2);
-    printf("x=%d, y=%d, dir=%d\n", data1, data2, dir);
-    calcCoor(radius, degrees, &dou_x, &dou_y);
-    //printf("x_coor=%f, y_coor=%f\n", dou_x, dou_y);
-    address.xcoor = x_center + (int)dou_x;
-    address.ycoor = (int)((y_center - dou_y) * 2.625);
-    printf("x_pix=%d, y_pix=%d\n", address.xcoor, address.ycoor);
-    write_addr(&address);
+    // read_audio();
+    // dir = calcDeg(data1, data2);
+    // printf("x=%d, y=%d, dir=%d\n", data1, data2, dir);
+    // calcCoor(radius, degrees, &dou_x, &dou_y);
+    // //printf("x_coor=%f, y_coor=%f\n", dou_x, dou_y);
+    // address.xcoor = x_center + (int)dou_x;
+    // address.ycoor = (int)((y_center - dou_y) * 2.625);
+    // printf("x_pix=%d, y_pix=%d\n", address.xcoor, address.ycoor);
+    // write_addr(&address);
 	}
   
 	printf("done\n");
