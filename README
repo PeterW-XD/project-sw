@@ -1,2 +1,6 @@
-Problems:
-1. data output of each channel with unexpected 0
+###master
+Peiran: Final demonstrated software part. Reset the calculation every 0.5 seconds.
+###sim
+Matheu: Bartlett Algorithm simulation and weights generation by MATLAB.
+###final_test_script
+Peiran: To get the FFT RAM data for debugging.
