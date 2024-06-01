@@ -1,6 +1,6 @@
-###master
+### master
 Peiran: Final demonstrated software part. Reset the calculation every 0.5 seconds.
-###sim
+### sim
 Matheu: Bartlett Algorithm simulation and weights generation by MATLAB.
-###final_test_script
+### final_test_script
 Peiran: To get the FFT RAM data for debugging.
